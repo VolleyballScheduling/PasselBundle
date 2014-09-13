@@ -4,7 +4,7 @@ namespace Volleyball\Bundle\PasselBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
-use Volleyball\Bundle\PasselBundle\Entity\Passel;
+
 use Volleyball\Bundle\PasselBundle\Traits\HasAttendeesTrait;
 use Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
 use Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
@@ -122,7 +122,7 @@ class Faction
      *
      * @return Leader
      */
-    public function setPassel(Passel $passel)
+    public function setPassel(\Volleyball\Component\Passel\Model\Passel $passel)
     {
         $this->passel = $passel;
 

@@ -1,16 +1,6 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
-
-class AttendeeRepository extends EntityRepository
+class AttendeeRepository extends \Volleyball\Bundle\UtilityBundle\Doctrine\ORM\EntityRepository
 {
-    public function search($query, $field = 'lastname')
-    {
-        $q = $this->createQueryBuilder('a');
-        $q->where('a.'.$field.' LIKE :query')
-                ->setParameter('query', '%'.$query.'%');
-        
-        return $q->getQuery()->getResult();
-    }
 }

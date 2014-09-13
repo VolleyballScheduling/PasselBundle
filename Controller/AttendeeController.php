@@ -1,33 +1,25 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
+use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use \Symfony\Component\HttpFoundation\Request;
+use \Pagerfanta\Pagerfanta;
+use \Pagerfanta\Adapter\DoctrineORMAdapter;
+use \Pagerfanta\Exception\NotValidCurrentPageException;
+use \Pagerfanta\View\TwitterBootstrapView;
 
-use Pagerfanta\Pagerfanta;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Exception\NotValidCurrentPageException;
-use Pagerfanta\View\TwitterBootstrapView;
-
-use Volleyball\Bundle\UtilityBundle\Controller\UtilityController as Controller;
-use Volleyball\Bundle\PasselBundle\Entity\Attendee;
-use Volleyball\Bundle\PasselBundle\Form\Type\AttendeeType;
-use Volleyball\Bundle\PasselBundle\Form\Type\Search\AttendeeType as AttendeeSearchType;
-
-class AttendeeController extends Controller
+class AttendeeController extends \Volleyball\Bundle\UtilityBundle\Controller\UtilityController
 {
     /**
      * @Route("/", name="volleyball_attendee_index")
      * @Template("VolleyballPasselBundle:Attendee:index.html.twig")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        // get route name/params to decypher data to delimit by
         $query = $this->get('doctrine')
             ->getRepository('VolleyballPasselBundle:Attendee')
-            ->createQueryBuilder('l')
-            ->orderBy('l.updated, l.name', 'ASC');
+            ->findAll();
 
         $pager = new Pagerfanta(new DoctrineORMAdapter($query));
         $pager->setMaxPerPage($this->getRequest()->get('pageMax', 5));
@@ -45,8 +37,11 @@ class AttendeeController extends Controller
      */
     public function newAction(Request $request)
     {
-        $attendee = new Attendee();
-        $form = $this->createForm(new AttendeeType(), $attendee);
+        $attendee = new \Volleyball\Bundle\PasselBundle\Entity\Attendee();
+        $form = $this->createForm(
+            new \Volleyball\Bundle\PasselBundle\Form\Type\AttendeeFormType(),
+            $attendee
+        );
 
         if ("POST" == $request->getMethod()) {
             $form->handleRequest($this->getRequest());
@@ -76,7 +71,7 @@ class AttendeeController extends Controller
      */
     public function searchAction(Request $request)
     {
-        $form = $this->createForm(new AttendeeSearchType());
+        $form = $this->createForm(new \Volleyball\Bundle\PasselBundle\Form\Type\AttendeeSearchFormType());
         
         if ("POST" == $request->getMethod()) {
             $form->handleRequest($this->getRequest());
@@ -98,8 +93,9 @@ class AttendeeController extends Controller
      * @Route("/{slug}", name="volleyball_attendee_show")
      * @Template("VolleyballPasselBundle:Attendee:show.html.twig")
      */
-    public function showAction($slug)
+    public function showAction(Request $request)
     {
+        $slug = $request->getParameter('slug');
         $attendee = $this->getDoctrine()
             ->getRepository('VolleyballPasselbundle:Attendee')
             ->findOneBySlug($slug);

@@ -5,43 +5,36 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-use Volleyball\Bundle\UserBundle\Entity\User;
-
 /**
  * @ORM\Table(name="attendee")
  * @ORM\Entity(repositoryClass="Volleyball\Bundle\PasselBundle\Repository\AttendeeRepository")
  */
-class Attendee extends User
+class Attendee extends \Volleyball\Bundle\UserBundle\Entity\User implements \Volleyball\Component\Passel\Interfaces\AttendeeInterface
 {
+    /**
+     * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
     /**
      * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Passel", inversedBy="attendee")
      * @ORM\JoinColumn(name="passel_id", referencedColumnName="id")
      */
     protected $passel = '';
-
-    /**
-     * Get passel
-     *
-     * @return Passel
-     */
-    public function getPassel()
-    {
-        return $this->passel;
-    }
-
-    /**
-     * Set passel
-     *
-     * @param Passel $passel passel
-     *
-     * @return Leader
-     */
-    public function setPassel(Passel $passel)
-    {
-        $this->passel = $passel;
-
-        return $this;
-    }
 
     /**
      * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Faction", inversedBy="attendee")
@@ -50,9 +43,42 @@ class Attendee extends User
     protected $faction = '';
 
     /**
-     * Get faction
-     *
-     * @return Faction
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Position", inversedBy="attendee")
+     * @ORM\JoinColumn(name="position_id", referencedColumnName="id")
+     */
+    protected $position = '';
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Level", inversedBy="attendee")
+     * @ORM\JoinColumn(name="level_id", referencedColumnName="id")
+     */
+    protected $level = '';
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Volleyball\Bundle\EnrollmentBundle\Entity\AttendeeEnrollmentCollection", mappedBy="passel")
+     */
+    protected $enrollments;
+    
+    /**
+     * @{inheritdocs}
+     */
+    public function getPassel()
+    {
+        return $this->passel;
+    }
+
+    /**
+     * @{inheritdocs}
+     */
+    public function setPassel(\Volleyball\Component\Passel\Model\Passel $passel)
+    {
+        $this->passel = $passel;
+
+        return $this;
+    }
+
+    /**
+     * @{inheritdocs}
      */
     public function getFaction()
     {
@@ -60,13 +86,9 @@ class Attendee extends User
     }
 
     /**
-     * Set faction
-     *
-     * @param Faction $faction faction
-     *
-     * @return Leader
+     * @{inheritdocs}
      */
-    public function setFaction(Faction $faction)
+    public function setFaction(\Volleyball\Component\Passel\Model\Faction $faction)
     {
         $this->faction = $faction;
 
@@ -74,15 +96,7 @@ class Attendee extends User
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Position", inversedBy="attendee")
-     * @ORM\JoinColumn(name="position_id", referencedColumnName="id")
-     */
-    protected $position = '';
-
-    /**
-     * Get position
-     *
-     * @return Position
+     * @{inheritdocs}
      */
     public function getPosition()
     {
@@ -90,13 +104,9 @@ class Attendee extends User
     }
 
     /**
-     * Set position
-     *
-     * @param Position $position position
-     *
-     * @return Leader
+     * @{inheritdocs}
      */
-    public function setPosition(Position $position)
+    public function setPosition(\Volleyball\Component\Passel\Model\Position $position)
     {
         $this->position = $position;
 
@@ -104,15 +114,7 @@ class Attendee extends User
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Level", inversedBy="attendee")
-     * @ORM\JoinColumn(name="level_id", referencedColumnName="id")
-     */
-    protected $level = '';
-
-    /**
-     * Get level
-     *
-     * @return Level
+     * @{inheritdocs}
      */
     public function getLevel()
     {
@@ -120,16 +122,90 @@ class Attendee extends User
     }
 
     /**
-     * Set level
-     *
-     * @param Level $level level
-     *
-     * @return Leader
+     * @{inheritdocs}
      */
-    public function setLevel(Level $level)
+    public function setLevel(\Volleyball\Component\Passel\Model\Level $level)
     {
         $this->level = $level;
 
         return $this;
+    }
+    
+    /**
+     * Get attendee enrollments
+     * @return array
+     */
+    public function getEnrollments()
+    {
+        return $this->enrollments;
+    }
+
+    /**
+     * Set attendee enrollments
+     * @param array $enrollments
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Attendee
+     */
+    public function setEnrollments(array $enrollments)
+    {
+        if (! $enrollments instanceof ArrayCollection) {
+            $enrollments = new ArrayCollection($enrollments);
+        }
+
+        $this->enrollments = $enrollments;
+
+        return $this;
+    }
+
+    /**
+     * Has enrollments
+     * @return boolean
+     */
+    public function hasEnrollments()
+    {
+        return !$this->enrollments->isEmpty();
+    }
+
+    /**
+     * Add attendee enrollment
+     * @param \Volleyball\Bundle\EnrollmentBundle\Entity\Attendee $enrollment
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Attendee
+     */
+    public function addEnrollment(\Volleyball\Component\Enrollment\Model\Attendee $enrollment)
+    {
+        $this->enrollments->add($enrollment);
+
+        return $this;
+    }
+
+    /**
+     * Remove attendee enrollment
+     * @param string|\Volleyball\Bundle\EnrollmentBundle\Entity\Attendee $enrollment
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Attendee
+     */
+    public function removeEnrollment($enrollment)
+    {
+        $this->enrollments->remove($enrollment);
+
+        return $this;
+    }
+
+    /**
+     * Get a attendee enrollment
+     *
+     * @param \Volleyball\Bundle\EnrollmentBundle\Entity\Attendee|String $enrollment enrollment
+     *
+     * @return Enrollment
+     */
+    public function getEnrollment($enrollment)
+    {
+        return $this->enrollments->get($enrollment);
+    }
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->enrollments = new ArrayCollection();
     }
 }

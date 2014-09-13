@@ -5,16 +5,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
+
 use Volleyball\Bundle\PasselBundle\Traits\HasAttendeesTrait;
 use Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
-
 use Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
 
 /**
  * @ORM\Table(name="passel_type")
  * @ORM\Entity(repositoryClass="Volleyball\Bundle\PasselBundle\Repository\TypeRepository")
  */
-class Type
+class Type extends \Volleyball\Component\Passel\Model\Type
 {
     use HasAttendeesTrait;
     use SluggableTrait;
@@ -26,7 +26,26 @@ class Type
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
+    
+    /**
+     * Name
+     * @var  string name
+     * @ORM\Column(name="name", type="string")
+     */
+    protected $name = '';
+    
+    /**
+     * Description
+     * @var string
+     */
+    protected $description = '';
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\OrganizationBundle\Entity\Organization", inversedBy="passel_type")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id")
+     */
+    protected $organization = '';
+    
     /**
      * Get id
      *
@@ -38,16 +57,7 @@ class Type
     }
 
     /**
-     * Name
-     * @var  string name
-     * @ORM\Column(name="name", type="string")
-     */
-    protected $name = '';
-
-    /**
-     * Get name
-     *
-     * @return string
+     * @{inheritdocs}
      */
     public function getName()
     {
@@ -55,11 +65,7 @@ class Type
     }
 
     /**
-     * Set name
-     *
-     * @param string $name name
-     *
-     * @return self
+     * @{inheritdocs}
      */
     public function setName($name)
     {
@@ -69,15 +75,7 @@ class Type
     }
 
     /**
-     * Description
-     * @var string
-     */
-    protected $description = '';
-
-    /**
-     * Get description
-     *
-     * @return string
+     * @{inheritdocs}
      */
     public function getDescription()
     {
@@ -85,11 +83,7 @@ class Type
     }
 
     /**
-     * Set description
-     *
-     * @param string $description description
-     *
-     * @return string
+     * @{inheritdocs}
      */
     public function setDescription($description)
     {
@@ -99,31 +93,19 @@ class Type
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\OrganizationBundle\Entity\Organization", inversedBy="position")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id")
+     * @{inheritdocs}
      */
-    protected $organization = '';
-
-    /**
-      * Get organization
-      *
-      * @return Organization
-      */
-    public function getOrganization()
+    public function getOrganization($organization)
     {
-        return $this->organization;
+        return $this->organizations[$organization];
     }
 
     /**
-      * Set organization
-      *
-      * @param Organization $organization organization
-      *
-      * @return  Organization
-      */
-    public function setOrganization(Organization $organization)
+     * @{inheritdocs}
+     */
+    public function addOrganization(\Volleyball\Component\Organization\Model\Organization $organization)
     {
-        $this->organization = $organization;
+        $this->organizations[$organization] = $organization;
 
         return $this;
     }

@@ -5,17 +5,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
-use Volleyball\Bundle\PasselBundle\Traits\LevelTrait;
+
 use Volleyball\Bundle\PasselBundle\Traits\HasAttendeesTrait;
 use Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
-
 use Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass="Volleyball\Bundle\PasselBundle\Repository\LevelRepository")
  * @ORM\Table(name="attendee_level")
  */
-class Level
+class Level extends \Volleyball\Component\Passel\Model\Level
 {
     use HasAttendeesTrait;
     use SluggableTrait;
@@ -29,6 +28,31 @@ class Level
     protected $id;
 
     /**
+     * Name
+     * @var  string name
+     * @ORM\Column(name="name", type="string")
+     */
+    protected $name = '';
+    
+    /**
+     * Description
+     *
+     * @var string
+     */
+    protected $description = '';
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\OrganizationBundle\Entity\Organization", inversedBy="level")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id")
+     */
+    protected $types = '';
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $special = false;
+    
+    /**
      * Get id
      *
      * @return integer
@@ -39,16 +63,7 @@ class Level
     }
 
     /**
-     * Name
-     * @var  string name
-     * @ORM\Column(name="name", type="string")
-     */
-    protected $name = '';
-
-    /**
-     * Get name
-     *
-     * @return string
+     * @{inheritdocs}
      */
     public function getName()
     {
@@ -56,11 +71,7 @@ class Level
     }
 
     /**
-     * Set name
-     *
-     * @param string $name name
-     *
-     * @return self
+     * @{inheritdocs}
      */
     public function setName($name)
     {
@@ -70,16 +81,7 @@ class Level
     }
 
     /**
-     * Description
-     *
-     * @var string
-     */
-    protected $description = '';
-
-    /**
-     * Get description
-     *
-     * @return string
+     * @{inheritdocs}
      */
     public function getDescription()
     {
@@ -87,11 +89,7 @@ class Level
     }
 
     /**
-     * Set description
-     *
-     * @param string $description description
-     *
-     * @return string
+     * @{inheritdocs}
      */
     public function setDescription($description)
     {
@@ -101,29 +99,17 @@ class Level
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\OrganizationBundle\Entity\Organization", inversedBy="level")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id")
+     * @{inheritdocs}
      */
-    protected $organization = '';
-
-    /**
-      * Get organization
-      *
-      * @return Organization
-      */
     public function getOrganization()
     {
         return $this->organization;
     }
 
     /**
-      * Set organization
-      *
-      * @param Organization $organization organization
-      *
-      * @return  Organization
-      */
-    public function setOrganization(Organization $organization)
+     * @{inheritdocs}
+     */
+    public function setOrganization(\Volleyball\Component\Orgnaization\Model\Organization $organization)
     {
         $this->organization = $organization;
 
@@ -131,16 +117,7 @@ class Level
     }
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $special = false;
-
-    /**
-     * Is special
-     *
-     * @param boolean $special special
-     *
-     * @return Rank
+     * @{inheritdocs}
      */
     public function isSpecial($special = null)
     {
@@ -151,5 +128,13 @@ class Level
         }
 
         return $this->special;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->attendees = new ArrayCollection();
     }
 }

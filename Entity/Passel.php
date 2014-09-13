@@ -6,12 +6,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Volleyball\Bundle\PasselBundle\Entity\Faction;
-use Volleyball\Bundle\PasselBundle\Entity\Leader;
-use Volleyball\Bundle\OrganizationBundle\Entity\Council;
-use Volleyball\Bundle\OrganizationBundle\Entity\Region;
-use Volleyball\Bundle\EnrollmentBundle\Entity\Passel as PasselEnrollment;
-use Volleyball\Bundle\PasselBundle\Entity\Type;
 use Volleyball\Bundle\PasselBundle\Traits\HasAttendeesTrait;
 use Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
 use Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
@@ -20,29 +14,18 @@ use Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
  * @ORM\Table(name="passel")
  * @ORM\Entity(repositoryClass="Volleyball\Bundle\PasselBundle\Repository\PasselRepository")
  */
-class Passel
+class Passel extends \Volleyball\Component\Passel\Model\Passel
 {
     use HasAttendeesTrait;
     use SluggableTrait;
     use TimestampableTrait;
     
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * @ORM\Column(type="string")
@@ -55,11 +38,58 @@ class Passel
      * @var string
      */
     protected $name;
-
+    
     /**
-     * Get name
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Type", inversedBy="passel")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
+     */
+    protected $type;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\OrganizationBundle\Entity\Organization", inversedBy="passel")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id")
+     */
+    protected $organization;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\OrganizationBundle\Entity\Council", inversedBy="passel")
+     * @ORM\JoinColumn(name="council_id", referencedColumnName="id")
+     */
+    protected $council;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\OrganizationBundle\Entity\Region", inversedBy="passel")
+     * @ORM\JoinColumn(name="region_id", referencedColumnName="id")
+     */
+    protected $region;
+        
+    /**
+     * @ORM\OneToMany(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Faction", mappedBy="passel")
+     */
+    protected $factions;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Leader", mappedBy="passel")
+     */
+    protected $leaders;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment", mappedBy="passel")
+     */
+    protected $enrollments;
+    
+    /**
+     * Get id
      *
-     * @return string
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
+     * @{inheritdocs}
      */
     public function getName()
     {
@@ -67,11 +97,7 @@ class Passel
     }
 
     /**
-     * Set name
-     *
-     * @param string $name name
-     *
-     * @return Passel
+     * @{inheritdocs}
      */
     public function setName($name)
     {
@@ -81,14 +107,7 @@ class Passel
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="Faction", mappedBy="passel")
-     */
-    protected $factions;
-
-    /**
-     * Get factions
-     *
-     * @return ArrayCollection
+     * @{inheritdocs}
      */
     public function getFactions()
     {
@@ -96,11 +115,7 @@ class Passel
     }
 
     /**
-     * Set factions
-     *
-     * @param array $factions factions
-     *
-     * @return self
+     * @{inheritdocs}
      */
     public function setFactions(array $factions)
     {
@@ -124,11 +139,7 @@ class Passel
     }
 
     /**
-     * Get a faction
-     *
-     * @param Faction|String $faction faction
-     *
-     * @return Faction
+     * @{inheritdocs}
      */
     public function getFaction($faction)
     {
@@ -136,13 +147,9 @@ class Passel
     }
 
     /**
-     * Add a faction
-     *
-     * @param Faction $faction faction
-     *
-     * @return self
+     * @{inheritdocs}
      */
-    public function addFaction(Faction $faction)
+    public function addFaction(\Volleyball\Component\Passel\Model\Faction $faction)
     {
         $this->factions->add($faction);
 
@@ -150,11 +157,7 @@ class Passel
     }
 
     /**
-     * Remove a faction
-     *
-     * @param Faction|String $faction faction
-     *
-     * @return self
+     * @{inheritdocs}
      */
     public function removeFaction($faction)
     {
@@ -164,15 +167,25 @@ class Passel
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\OrganizationBundle\Entity\Council", inversedBy="passel")
-     * @ORM\JoinColumn(name="council_id", referencedColumnName="id")
+     * @{inheritdocs}
      */
-    protected $council;
-
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+    
     /**
-     * Get council
-     *
-     * @return Council
+     * @{inheritdocs}
+     */
+    public function setOrganization(\Volleyball\Component\Organization\Model\Organization $organization)
+    {
+        $this->organization = $organization;
+        
+        return $this;
+    }
+    
+    /**
+     * @{inheritdocs}
      */
     public function getCouncil()
     {
@@ -180,13 +193,9 @@ class Passel
     }
 
     /**
-     * Set council
-     *
-     * @param Council $council council
-     *
-     * @return Council
+     * @{inheritdocs}
      */
-    public function setCouncil(Council $council)
+    public function setCouncil(\Volleyball\Component\Organization\Model\Council $council)
     {
         $this->council = $council;
 
@@ -194,15 +203,7 @@ class Passel
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\OrganizationBundle\Entity\Region", inversedBy="passel")
-     * @ORM\JoinColumn(name="region_id", referencedColumnName="id")
-     */
-    protected $region;
-
-    /**
-     * Get region
-     *
-     * @return Region
+     * @{inheritdocs}
      */
     public function getRegion()
     {
@@ -210,13 +211,9 @@ class Passel
     }
 
     /**
-     * Set region
-     *
-     * @param Region $region region
-     *
-     * @return Region
+     * @{inheritdocs}
      */
-    public function setRegion(Region $region)
+    public function setRegion(\Volleyball\Component\Organization\Model\Region $region)
     {
         $this->region = $region;
 
@@ -224,14 +221,7 @@ class Passel
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="Leader", mappedBy="passel")
-     */
-    protected $leaders;
-
-    /**
-     * Get leaders
-     *
-     * @return ArrayCollection
+     * @{inheritdocs}
      */
     public function getLeaders()
     {
@@ -239,11 +229,7 @@ class Passel
     }
 
     /**
-     * Set leaders
-     *
-     * @param array $leaders leaders
-     *
-     * @return self
+     * @{inheritdocs}
      */
     public function setLeaders(array $leaders)
     {
@@ -257,9 +243,7 @@ class Passel
     }
 
     /**
-     * Has leaders
-     *
-     * @return boolean
+     * @{inheritdocs}
      */
     public function hasLeaders()
     {
@@ -267,11 +251,7 @@ class Passel
     }
 
     /**
-     * Add an leader
-     *
-     * @param Leader $leader leader
-     *
-     * @return self
+     * @{inheritdocs}
      */
     public function addLeader(Leader $leader)
     {
@@ -281,11 +261,7 @@ class Passel
     }
 
     /**
-     * Remove an leader
-     *
-     * @param Leader|String $leader leader
-     *
-     * @return self
+     * @{inheritdocs}
      */
     public function removeLeader($leader)
     {
@@ -295,13 +271,7 @@ class Passel
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="Leader", inversedBy="passel")
-     * @ORM\JoinColumn(name="leader_id", referencedColumnName="id")
-     */
-    protected $leader;
-
-    /**
-     * Get an leader
+     * Get a leader
      *
      * @param Leader|String $leader leader
      *
@@ -313,33 +283,8 @@ class Passel
     }
 
     /**
-     * Set leader
-     *
-     * @param Leader  $leader    leader
-     * @param boolean $addToList addtolist
-     *
-     * @return Passel|boolean
-     */
-    public function setLeader(Leader $leader, $addToList = false)
-    {
-        if (null != $this->leaders->get($leader) || $addToList) {
-            $this->leader = $leader;
-
-            return $this;
-        }
-
-        return false;
-    }
-
-    /**
-     * @ORM\OneToMany(targetEntity="Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment", mappedBy="passel")
-     */
-    protected $enrollments;
-
-    /**
-     * Get enrollments
-     *
-     * @return ArrayCollection
+     * Get passel enrollments
+     * @return array
      */
     public function getEnrollments()
     {
@@ -347,15 +292,68 @@ class Passel
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="Type", inversedBy="passel")
-     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
+     * Set passel enrollments
+     * @param array $enrollments
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Passel
      */
-    protected $type;
+    public function setEnrollments(array $enrollments)
+    {
+        if (! $enrollments instanceof ArrayCollection) {
+            $enrollments = new ArrayCollection($enrollments);
+        }
+
+        $this->enrollments = $enrollments;
+
+        return $this;
+    }
 
     /**
-     * Get type
+     * Has enrollments
+     * @return boolean
+     */
+    public function hasEnrollments()
+    {
+        return !$this->enrollments->isEmpty();
+    }
+
+    /**
+     * Add passel enrollment
+     * @param \Volleyball\Bundle\EnrollmentBundle\Entity\Passel $enrollment
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Passel
+     */
+    public function addEnrollment(\Volleyball\Component\Enrollment\Model\Passel $enrollment)
+    {
+        $this->enrollments->add($enrollment);
+
+        return $this;
+    }
+
+    /**
+     * Remove passel enrollment
+     * @param string|\Volleyball\Bundle\EnrollmentBundle\Entity\Passel $enrollment
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Passel
+     */
+    public function removeEnrollment($enrollment)
+    {
+        $this->enrollments->remove($enrollment);
+
+        return $this;
+    }
+
+    /**
+     * Get a passel enrollment
      *
-     * @return Type
+     * @param \Volleyball\Bundle\EnrollmentBundle\Entity\Passel|String $enrollment enrollment
+     *
+     * @return Enrollment
+     */
+    public function getEnrollment($enrollment)
+    {
+        return $this->enrollments->get($enrollment);
+    }
+
+    /**
+     * @{inheritdocs}
      */
     public function getType()
     {
@@ -363,13 +361,9 @@ class Passel
     }
 
     /**
-     * Set type
-     *
-     * @param Type $type type
-     *
-     * @return type
+     * @{inheritdocs}
      */
-    public function setType(Type $type)
+    public function setType(\Volleyball\Component\Passel\Model\Type $type)
     {
         if ($this->organization == $type->getOrganization) {
             $this->type = $type;
@@ -388,5 +382,6 @@ class Passel
         $this->leaders   = new ArrayCollection();
         $this->factions  = new ArrayCollection();
         $this->attendees = new ArrayCollection();
+        $this->enrollments = new ArrayCollection();
     }
 }

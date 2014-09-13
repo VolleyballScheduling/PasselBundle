@@ -1,33 +1,27 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
+use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use \Symfony\Component\HttpFoundation\Request;
 
-use Pagerfanta\Pagerfanta;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Exception\NotValidCurrentPageException;
-use Pagerfanta\View\TwitterBootstrapView;
+use \Pagerfanta\Pagerfanta;
+use \Pagerfanta\Adapter\DoctrineORMAdapter;
+use \Pagerfanta\Exception\NotValidCurrentPageException;
+use \Pagerfanta\View\TwitterBootstrapView;
 
-use Volleyball\Bundle\UtilityBundle\Controller\UtilityController as Controller;
-use Volleyball\Bundle\PasselBundle\Entity\Faction;
-use Volleyball\Bundle\PasselBundle\Form\Type\FactionType;
-use Volleyball\Bundle\PasselBundle\Form\Type\Search\FactionType as FactionSearchType;
-
-class FactionController extends Controller
+class FactionController extends \Volleyball\Bundle\UtilityBundle\Controller\UtilityController
 {
     /**
      * @Route("/", name="volleyball_faction_index")
      * @Template("VolleyballPasselBundle:Faction:index.html.twig")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         // get route name/params to decypher data to delimit by
         $query = $this->get('doctrine')
             ->getRepository('VolleyballPasselBundle:Faction')
-            ->createQueryBuilder('f')
-            ->orderBy('f.updated, f.name', 'ASC');
+            ->findAll();
 
         $pager = new Pagerfanta(new DoctrineORMAdapter($query));
         $pager->setMaxPerPage($this->getRequest()->get('pageMax', 5));
@@ -45,8 +39,11 @@ class FactionController extends Controller
      */
     public function newAction(Request $request)
     {
-        $faction = new Faction();
-        $form = $this->createForm(new FactionType(), $faction);
+        $faction = new \Volleyball\Bundle\PasselBundle\Entity\Faction();
+        $form = $this->createForm(
+            new \Volleyball\Bundle\PasselBundle\Form\Type\FactionFormType(),
+            $faction
+        );
 
         if ("POST" == $request->getMethod()) {
             $form->handleRequest($this->getRequest());
@@ -76,7 +73,7 @@ class FactionController extends Controller
      */
     public function searchAction(Request $request)
     {
-        $form = $this->createForm(new FactionSearchType());
+        $form = $this->createForm(new \Volleyball\Bundle\PasselBundle\Form\Type\FactionSearchFormType());
         
         if ("POST" == $request->getMethod()) {
             $form->handleRequest($this->getRequest());
@@ -98,8 +95,9 @@ class FactionController extends Controller
      * @Route("/{slug}", name="volleyball_faction_show")
      * @Template("VolleyballPasselBundle:Faction:show.html.twig")
      */
-    public function showAction($slug)
+    public function showAction(Request $request)
     {
+        $slug = $request->getParameter('slug');
         $faction = $this->getDoctrine()
             ->getRepository('VolleyballPasselbundle:Faction')
             ->findOneBySlug($slug);

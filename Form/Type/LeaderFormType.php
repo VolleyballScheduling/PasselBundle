@@ -1,14 +1,12 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Volleyball\Bundle\PasselBundle\Entity\Leader;
-
-class LeaderType extends AbstractType
+class LeaderFormType extends \Symfony\Component\Form\AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+    public function buildForm(
+        \Symfony\Component\Form\FormBuilderInterface $builder,
+        array $options
+    ) {
         $builder->add('first_name');
         $builder->add('last_name');
         $builder->add('birthdate', 'birthday');

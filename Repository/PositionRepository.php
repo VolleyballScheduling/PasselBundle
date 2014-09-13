@@ -1,16 +1,6 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
-
-class PositionRepository extends EntityRepository
+class PositionRepository extends \Volleyball\Bundle\UtilityBundle\Doctrine\ORM\EntityRepository
 {
-    public function search($query, $field = 'name')
-    {
-        $q = $this->createQueryBuilder('f');
-        $q->where('f.'.$field.' LIKE :query')
-                ->setParameter('query', '%'.$query.'%');
-        
-        return $q->getQuery()->getResult();
-    }
 }

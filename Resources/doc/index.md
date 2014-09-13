@@ -1,24 +1,39 @@
-Passel Bundle
-=============
+VolleyballPasselBundle
+================
+Volley scheduling system passel bundle.
+This bundle contains all passel frontend components of the Volleyball Scheduling system.
 
-Bundle for passel related entities.
+Installation
+-------------
 
-Entities
+Update `composer.json` file:
+```js
+"volleyball/passel-bundle": dev-master,
+```
+
+Then update composer:
+```bash
+php composer.phar update volleyball/passel-bundle
+```
+
+Configuration
+-------------
+Tweak stuff here.
+
+Services
 --------
-- [Attendee](entity/attendee.md)
-- [Faction](entity/faction.md)
-- [Leader](entity/leader.md)
-- [Level](entity/level.md)
-- [Passel](entity/passel.md)
-- [Position](entity/position.md)
-- [Type](entity/type.md)
+*none*.
 
 Forms
 -----
-- [Attendee](form/attendee.md)
-- [Faction](form/faction.md)
-- [Leader](form/leader.md)
-- [Level](form/level.md)
-- [Passel](form/passel.md)
-- [Position](form/position.md)
-- [Type](form/type.md)
+- AttendeeFormType
+- AttendeeSearchFormType
+- FactionFormType
+- FactionSearchFormType
+- LeaderFormType
+- LeaderSearchFormType
+- LevelFormType
+- PasselFormType
+- PasselSearchFormType
+- PositionFormType
+- TypeFormType

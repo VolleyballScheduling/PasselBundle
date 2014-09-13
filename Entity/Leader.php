@@ -4,10 +4,7 @@ namespace Volleyball\Bundle\PasselBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
-
 use PUGX\MultiUserBundle\Validator\Constraints\UniqueEntity;
-
-use Volleyball\Bundle\UserBundle\Entity\User;
 
 /**
  * @ORM\Entity
@@ -15,37 +12,32 @@ use Volleyball\Bundle\UserBundle\Entity\User;
  * @UniqueEntity(fields = "username", targetClass = "Volleyball\Bundle\UserBundle\Entity\User", message="fos_user.username_already")
  * @UniqueEntity(fields = "email", targetClass = "Volleyball\Bundle\UserBundle\Entity\User", message="fos_user.email_already")
  */
-class Leader extends User
+class Leader extends \Volleyball\Component\Passel\Model\Leader
 {
+    /**
+     * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
     /**
      * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Passel", inversedBy="leader")
      * @ORM\JoinColumn(name="passel_id", referencedColumnName="id")
      */
     protected $passel = '';
-
-    /**
-     * Get passel
-     *
-     * @return Passel
-     */
-    public function getPassel()
-    {
-        return $this->passel;
-    }
-
-    /**
-     * Set passel
-     *
-     * @param Passel $passel passel
-     *
-     * @return Leader
-     */
-    public function setPassel(Passel $passel)
-    {
-        $this->passel = $passel;
-
-        return $this;
-    }
 
     /**
      * Admin - if true, user can make limited changes to the passel
@@ -54,11 +46,31 @@ class Leader extends User
     protected $admin = false;
 
     /**
-     * Is admin
-     *
-     * @param boolean $admin admin
-     *
-     * @return boolean|Leader
+     * Primary
+     * @var boolean
+     */
+    protected $primary = false;
+    
+    /**
+     * @{inheritdocs}
+     */
+    public function getPassel()
+    {
+        return $this->passel;
+    }
+
+    /**
+     * @{inheritdocs}
+     */
+    public function setPassel(\Volleyball\Component\Passel\Model\Passel $passel)
+    {
+        $this->passel = $passel;
+
+        return $this;
+    }
+
+    /**
+     * @{inheritdocs}
      */
     public function isAdmin($admin = null)
     {
@@ -72,17 +84,7 @@ class Leader extends User
     }
 
     /**
-     * Primary
-     * @var boolean
-     */
-    protected $primary = false;
-
-    /**
-     * Is primary
-     *
-     * @param boolean $primary primary
-     *
-     * @return boolean|Leader
+     * @{inheritdocs}
      */
     public function isPrimary($primary = null)
     {

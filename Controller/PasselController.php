@@ -1,35 +1,28 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
+use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use \Symfony\Component\HttpFoundation\Request;
 
-use Pagerfanta\Pagerfanta;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Exception\NotValidCurrentPageException;
-use Pagerfanta\View\TwitterBootstrapView;
+use \Pagerfanta\Pagerfanta;
+use \Pagerfanta\Adapter\DoctrineORMAdapter;
+use \Pagerfanta\Exception\NotValidCurrentPageException;
+use \Pagerfanta\View\TwitterBootstrapView;
 
-use Volleyball\Bundle\UtilityBundle\Controller\UtilityController as Controller;
-use Volleyball\Bundle\PasselBundle\Entity\Passel;
-use Volleyball\Bundle\PasselBundle\Form\Type\PasselType;
-use Volleyball\Bundle\PasselBundle\Form\Type\Search\PasselType as PasselSearchType;
-
-class PasselController extends Controller
+class PasselController extends \Volleyball\Bundle\UtilityBundle\Controller\UtilityController
 {
     /**
      * @Route("/", name="volleyball_passel_index")
      * @Template("VolleyballPasselBundle:Passel:index.html.twig")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $this->breadcrumbs->addItem('passels');
         
-        // get route name/params to decypher data to delimit by
         $query = $this->get('doctrine')
             ->getRepository('VolleyballPasselBundle:Passel')
-            ->createQueryBuilder('f')
-            ->orderBy('f.updated, f.name', 'ASC');
+            ->findAll();
 
         $pager = new Pagerfanta(new DoctrineORMAdapter($query));
         $pager->setMaxPerPage($this->getRequest()->get('pageMax', 5));
@@ -49,8 +42,11 @@ class PasselController extends Controller
     {
         $this->breadcrumbs->addItem('passels', $this->get('router')->generate('volleyball_passel_index'));
         
-        $passel = new Passel();
-        $form = $this->createForm(new PasselType(), $passel);
+        $passel = new \Volleyball\Bundle\PasselBundle\Entity\Passel();
+        $form = $this->createForm(
+            new \Volleyball\Bundle\PasselBundle\Form\Type\PasselFormType(),
+            $passel
+        );
 
         if ("POST" == $request->getMethod()) {
             $form->handleRequest($this->getRequest());
@@ -83,7 +79,7 @@ class PasselController extends Controller
         $this->breadcrumbs->addItem('passels', $this->get('router')->generate('volleyball_passel_index'));
         $this->breadcrumbs->addItem('search', $this->get('router')->generate('volleyball_passel_search'));
         
-        $form = $this->createForm(new PasselSearchType());
+        $form = $this->createForm(new \Volleyball\Bundle\PasselBundle\Form\Type\PasselSearchFormType());
         
         if ("POST" == $request->getMethod()) {
             $form->handleRequest($this->getRequest());
@@ -105,8 +101,9 @@ class PasselController extends Controller
      * @Route("/{slug}", name="volleyball_passel_show")
      * @Template("VolleyballPasselBundle:Passel:show.html.twig")
      */
-    public function showAction($slug)
+    public function showAction(Request $request)
     {
+        $slug = $request->getParameter('slug');
         $passel = $this->getDoctrine()
             ->getRepository('VolleyballPasselbundle:Passel')
             ->findOneBySlug($slug);
