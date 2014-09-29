@@ -149,7 +149,7 @@ class Passel extends \Volleyball\Component\Passel\Model\Passel
     /**
      * @{inheritdocs}
      */
-    public function addFaction(\Volleyball\Component\Passel\Model\Faction $faction)
+    public function addFaction(\Volleyball\Bundle\PasselBundle\Entity\Faction $faction)
     {
         $this->factions->add($faction);
 
@@ -177,7 +177,7 @@ class Passel extends \Volleyball\Component\Passel\Model\Passel
     /**
      * @{inheritdocs}
      */
-    public function setOrganization(\Volleyball\Component\Organization\Model\Organization $organization)
+    public function setOrganization(\Volleyball\Bundle\OrganizationBundle\Entity\Organization $organization)
     {
         $this->organization = $organization;
         
@@ -195,7 +195,7 @@ class Passel extends \Volleyball\Component\Passel\Model\Passel
     /**
      * @{inheritdocs}
      */
-    public function setCouncil(\Volleyball\Component\Organization\Model\Council $council)
+    public function setCouncil(\Volleyball\Bundle\OrganizationBundle\Entity\Council $council)
     {
         $this->council = $council;
 
@@ -213,7 +213,7 @@ class Passel extends \Volleyball\Component\Passel\Model\Passel
     /**
      * @{inheritdocs}
      */
-    public function setRegion(\Volleyball\Component\Organization\Model\Region $region)
+    public function setRegion(\Volleyball\Bundle\OrganizationBundle\Entity\Region $region)
     {
         $this->region = $region;
 
@@ -318,10 +318,10 @@ class Passel extends \Volleyball\Component\Passel\Model\Passel
 
     /**
      * Add passel enrollment
-     * @param \Volleyball\Bundle\EnrollmentBundle\Entity\Passel $enrollment
+     * @param \Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment $enrollment
      * @return \Volleyball\Bundle\PasselBundle\Entity\Passel
      */
-    public function addEnrollment(\Volleyball\Component\Enrollment\Model\Passel $enrollment)
+    public function addEnrollment(\Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment $enrollment)
     {
         $this->enrollments->add($enrollment);
 
@@ -330,7 +330,7 @@ class Passel extends \Volleyball\Component\Passel\Model\Passel
 
     /**
      * Remove passel enrollment
-     * @param string|\Volleyball\Bundle\EnrollmentBundle\Entity\Passel $enrollment
+     * @param string|\Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment $enrollment
      * @return \Volleyball\Bundle\PasselBundle\Entity\Passel
      */
     public function removeEnrollment($enrollment)
@@ -343,7 +343,7 @@ class Passel extends \Volleyball\Component\Passel\Model\Passel
     /**
      * Get a passel enrollment
      *
-     * @param \Volleyball\Bundle\EnrollmentBundle\Entity\Passel|String $enrollment enrollment
+     * @param \Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment|String $enrollment enrollment
      *
      * @return Enrollment
      */
@@ -363,9 +363,9 @@ class Passel extends \Volleyball\Component\Passel\Model\Passel
     /**
      * @{inheritdocs}
      */
-    public function setType(\Volleyball\Component\Passel\Model\Type $type)
+    public function setType(\Volleyball\Bundle\PasselBundle\Entity\Type $type)
     {
-        if ($this->organization == $type->getOrganization) {
+        if ($type->hasOrganization($this->organization)) {
             $this->type = $type;
 
             return $this;

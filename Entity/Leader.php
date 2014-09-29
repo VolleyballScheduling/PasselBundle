@@ -2,6 +2,7 @@
 namespace Volleyball\Bundle\PasselBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use PUGX\MultiUserBundle\Validator\Constraints\UniqueEntity;
@@ -12,7 +13,7 @@ use PUGX\MultiUserBundle\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(fields = "username", targetClass = "Volleyball\Bundle\UserBundle\Entity\User", message="fos_user.username_already")
  * @UniqueEntity(fields = "email", targetClass = "Volleyball\Bundle\UserBundle\Entity\User", message="fos_user.email_already")
  */
-class Leader extends \Volleyball\Component\Passel\Model\Leader
+class Leader extends \Volleyball\Bundle\UserBundle\Entity\User implements \Volleyball\Component\Passel\Interfaces\LeaderInterface
 {
     /**
      * @var integer $id
@@ -62,7 +63,7 @@ class Leader extends \Volleyball\Component\Passel\Model\Leader
     /**
      * @{inheritdocs}
      */
-    public function setPassel(\Volleyball\Component\Passel\Model\Passel $passel)
+    public function setPassel(\Volleyball\Bundle\PasselBundle\Entity\Passel $passel)
     {
         $this->passel = $passel;
 

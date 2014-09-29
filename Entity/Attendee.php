@@ -2,6 +2,7 @@
 namespace Volleyball\Bundle\PasselBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -37,19 +38,19 @@ class Attendee extends \Volleyball\Bundle\UserBundle\Entity\User implements \Vol
     protected $passel = '';
 
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Faction", inversedBy="attendee")
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Faction", inversedBy="attendees")
      * @ORM\JoinColumn(name="faction_id", referencedColumnName="id")
      */
     protected $faction = '';
 
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Position", inversedBy="attendee")
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Position", inversedBy="attendees")
      * @ORM\JoinColumn(name="position_id", referencedColumnName="id")
      */
     protected $position = '';
 
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Level", inversedBy="attendee")
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Level", inversedBy="attendees")
      * @ORM\JoinColumn(name="level_id", referencedColumnName="id")
      */
     protected $level = '';
@@ -70,7 +71,7 @@ class Attendee extends \Volleyball\Bundle\UserBundle\Entity\User implements \Vol
     /**
      * @{inheritdocs}
      */
-    public function setPassel(\Volleyball\Component\Passel\Model\Passel $passel)
+    public function setPassel(\Volleyball\Bundle\PasselBundle\Entity\Passel $passel)
     {
         $this->passel = $passel;
 
@@ -88,7 +89,7 @@ class Attendee extends \Volleyball\Bundle\UserBundle\Entity\User implements \Vol
     /**
      * @{inheritdocs}
      */
-    public function setFaction(\Volleyball\Component\Passel\Model\Faction $faction)
+    public function setFaction(\Volleyball\Bundle\PasselBundle\Entity\Faction $faction)
     {
         $this->faction = $faction;
 
@@ -106,7 +107,7 @@ class Attendee extends \Volleyball\Bundle\UserBundle\Entity\User implements \Vol
     /**
      * @{inheritdocs}
      */
-    public function setPosition(\Volleyball\Component\Passel\Model\Position $position)
+    public function setPosition(\Volleyball\Bundle\PasselBundle\Entity\Position $position)
     {
         $this->position = $position;
 
@@ -124,7 +125,7 @@ class Attendee extends \Volleyball\Bundle\UserBundle\Entity\User implements \Vol
     /**
      * @{inheritdocs}
      */
-    public function setLevel(\Volleyball\Component\Passel\Model\Level $level)
+    public function setLevel(\Volleyball\Bundle\PasselBundle\Entity\Level $level)
     {
         $this->level = $level;
 

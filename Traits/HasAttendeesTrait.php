@@ -1,12 +1,12 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Traits;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use \Doctrine\Common\Collections\ArrayCollection;
 
 trait HasAttendeesTrait
 {
     /**
-     * @ORM\OneToMany(targetEntity="Attendee", mappedBy="passel")
+     * @ORM\OneToMany(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Attendee", mappedBy="passel")
      */
     protected $attendees;
 
@@ -67,7 +67,7 @@ trait HasAttendeesTrait
      *
      * @return self
      */
-    public function addAttendee(Attendee $attendee)
+    public function addAttendee(\Volleyball\Bundle\PasselBundle\Entity\Attendee $attendee)
     {
         $this->attendees->add($attendee);
 

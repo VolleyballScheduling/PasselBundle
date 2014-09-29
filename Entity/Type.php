@@ -1,14 +1,14 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
+use \Doctrine\ORM\Mapping as ORM;
+use \Gedmo\Mapping\Annotation as Gedmo;
+use \Symfony\Component\Validator\Constraints as Assert;
+use \Doctrine\Common\Collections\ArrayCollection;
 
-use Volleyball\Bundle\PasselBundle\Traits\HasAttendeesTrait;
-use Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
-use Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
+use \Volleyball\Bundle\PasselBundle\Traits\HasAttendeesTrait;
+use \Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
+use \Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
 
 /**
  * @ORM\Table(name="passel_type")
@@ -32,19 +32,19 @@ class Type extends \Volleyball\Component\Passel\Model\Type
      * @var  string name
      * @ORM\Column(name="name", type="string")
      */
-    protected $name = '';
+    protected $name;
     
     /**
      * Description
      * @var string
      */
-    protected $description = '';
+    protected $description;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\OrganizationBundle\Entity\Organization", inversedBy="passel_type")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="Volleyball\Bundle\OrganizationBundle\Entity\Organization", inversedBy="types")
+     * @ORM\JoinTable(name="passel_types_organizations")
      */
-    protected $organization = '';
+    protected $organizations;
     
     /**
      * Get id
@@ -97,17 +97,46 @@ class Type extends \Volleyball\Component\Passel\Model\Type
      */
     public function getOrganization($organization)
     {
-        return $this->organizations[$organization];
+        return $this->organizations->get($organization);
+    }
+    
+    /**
+     * @{inheritdocs}
+     */
+    public function getOrganizations()
+    {
+        return $this->organizations;
+    }
+    
+    public function setOrganizations(array $organizations)
+    {
+        if (!organizations instanceof ArrayCollection) {
+            $organizations = new ArrayCollection($organizations);
+        }
+        
+        $this->organizations = $organizations;
     }
 
     /**
      * @{inheritdocs}
      */
-    public function addOrganization(\Volleyball\Component\Organization\Model\Organization $organization)
+    public function addOrganization(\Volleyball\Bundle\OrganizationBundle\Entity\Organization $organization)
     {
-        $this->organizations[$organization] = $organization;
-
+        if (!$this->organizations->contains($organization)) {
+            $this->organizations->add($organization);
+        }
+        
         return $this;
+    }
+    
+    /**
+     * Has organization
+     * @param mixed $organization
+     * @return boolean
+     */
+    public function hasOrganization($organization)
+    {
+        return $this->organizations->contains($organization);
     }
 
     /**
@@ -116,5 +145,6 @@ class Type extends \Volleyball\Component\Passel\Model\Type
     public function __construct()
     {
         $this->attendees = new ArrayCollection();
+        $this->organizations = new ArrayCollection();
     }
 }
