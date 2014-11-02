@@ -1,64 +1,65 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
+use \Doctrine\ORM\Mapping as ORM;
+use \Doctrine\Common\Collections\ArrayCollection;
+use \Gedmo\Mapping\Annotation as Gedmo;
+use \Symfony\Component\Validator\Constraints as Assert;
+use \PUGX\MultiUserBundle\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Table(name="attendee")
- * @ORM\Entity(repositoryClass="Volleyball\Bundle\PasselBundle\Repository\AttendeeRepository")
+ * @ORM\Entity
+ * @UniqueEntity(fields = "username", targetClass = "Volleyball\Bundle\UserBundle\Entity\User", message="fos_user.username_already")
+ * @UniqueEntity(fields = "email", targetClass = "Volleyball\Bundle\UserBundle\Entity\User", message="fos_user.email_already")
  */
 class Attendee extends \Volleyball\Bundle\UserBundle\Entity\User implements \Volleyball\Component\Passel\Interfaces\AttendeeInterface
 {
     /**
      * @var integer $id
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Passel", inversedBy="attendee")
+     * @ORM\JoinColumn(name="passel_id", referencedColumnName="id")
+     */
+    protected $passel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Faction", inversedBy="attendees")
+     * @ORM\JoinColumn(name="faction_id", referencedColumnName="id")
+     */
+    protected $faction;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Position", inversedBy="attendees")
+     * @ORM\JoinColumn(name="position_id", referencedColumnName="id")
+     */
+    protected $position;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Level", inversedBy="attendees")
+     * @ORM\JoinColumn(name="level_id", referencedColumnName="id")
+     */
+    protected $level;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Volleyball\Bundle\EnrollmentBundle\Entity\AttendeeEnrollment", mappedBy="passel")
+     */
+    protected $enrollments;
 
     /**
      * Get id
-     *
      * @return integer
      */
     public function getId()
     {
         return $this->id;
     }
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Passel", inversedBy="attendee")
-     * @ORM\JoinColumn(name="passel_id", referencedColumnName="id")
-     */
-    protected $passel = '';
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Faction", inversedBy="attendees")
-     * @ORM\JoinColumn(name="faction_id", referencedColumnName="id")
-     */
-    protected $faction = '';
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Position", inversedBy="attendees")
-     * @ORM\JoinColumn(name="position_id", referencedColumnName="id")
-     */
-    protected $position = '';
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Level", inversedBy="attendees")
-     * @ORM\JoinColumn(name="level_id", referencedColumnName="id")
-     */
-    protected $level = '';
-    
-    /**
-     * @ORM\OneToMany(targetEntity="Volleyball\Bundle\EnrollmentBundle\Entity\AttendeeEnrollmentCollection", mappedBy="passel")
-     */
-    protected $enrollments;
     
     /**
      * @{inheritdocs}
@@ -192,9 +193,7 @@ class Attendee extends \Volleyball\Bundle\UserBundle\Entity\User implements \Vol
 
     /**
      * Get a attendee enrollment
-     *
      * @param \Volleyball\Bundle\EnrollmentBundle\Entity\Attendee|String $enrollment enrollment
-     *
      * @return Enrollment
      */
     public function getEnrollment($enrollment)

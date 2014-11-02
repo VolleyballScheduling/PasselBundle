@@ -1,20 +1,20 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
+use \Doctrine\ORM\Mapping as ORM;
+use \Gedmo\Mapping\Annotation as Gedmo;
+use \Symfony\Component\Validator\Constraints as Assert;
+use \Doctrine\Common\Collections\ArrayCollection;
 
-use Volleyball\Bundle\PasselBundle\Traits\HasAttendeesTrait;
-use Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
-use Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
+use \Volleyball\Bundle\PasselBundle\Traits\HasAttendeesTrait;
+use \Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
+use \Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
 
 /**
  * @ORM\Table(name="passel")
  * @ORM\Entity(repositoryClass="Volleyball\Bundle\PasselBundle\Repository\PasselRepository")
  */
-class Passel extends \Volleyball\Component\Passel\Model\Passel
+class Passel implements \Volleyball\Component\Passel\Interfaces\PasselInterface
 {
     use HasAttendeesTrait;
     use SluggableTrait;
@@ -130,7 +130,6 @@ class Passel extends \Volleyball\Component\Passel\Model\Passel
 
     /**
      * Has factions
-     *
      * @return boolean
      */
     public function hasFactions()

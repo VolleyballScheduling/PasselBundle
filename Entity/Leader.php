@@ -1,11 +1,11 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
-use PUGX\MultiUserBundle\Validator\Constraints\UniqueEntity;
+use \Doctrine\ORM\Mapping as ORM;
+use \Doctrine\Common\Collections\ArrayCollection;
+use \Gedmo\Mapping\Annotation as Gedmo;
+use \Symfony\Component\Validator\Constraints as Assert;
+use \PUGX\MultiUserBundle\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
@@ -17,7 +17,6 @@ class Leader extends \Volleyball\Bundle\UserBundle\Entity\User implements \Volle
 {
     /**
      * @var integer $id
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -25,32 +24,30 @@ class Leader extends \Volleyball\Bundle\UserBundle\Entity\User implements \Volle
     protected $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Passel", inversedBy="leader")
+     * @ORM\JoinColumn(name="passel_id", referencedColumnName="id")
+     */
+    protected $passel;
+
+    /**
+     * Admin - if true, user can make limited changes to the passel
+     * @var boolean
+     */
+    protected $admin;
+
+    /**
+     * @var boolean
+     */
+    protected $primary;
+    
+    /**
      * Get id
-     *
      * @return integer
      */
     public function getId()
     {
         return $this->id;
     }
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Passel", inversedBy="leader")
-     * @ORM\JoinColumn(name="passel_id", referencedColumnName="id")
-     */
-    protected $passel = '';
-
-    /**
-     * Admin - if true, user can make limited changes to the passel
-     * @var boolean
-     */
-    protected $admin = false;
-
-    /**
-     * Primary
-     * @var boolean
-     */
-    protected $primary = false;
     
     /**
      * @{inheritdocs}

@@ -6,8 +6,6 @@ use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use \Symfony\Component\HttpFoundation\Request;
 use \Pagerfanta\Pagerfanta;
 use \Pagerfanta\Adapter\DoctrineORMAdapter;
-use \Pagerfanta\Exception\NotValidCurrentPageException;
-use \Pagerfanta\View\TwitterBootstrapView;
 
 class AttendeeController extends \Volleyball\Bundle\UtilityBundle\Controller\UtilityController
 {
@@ -74,10 +72,9 @@ class AttendeeController extends \Volleyball\Bundle\UtilityBundle\Controller\Uti
         $form = $this->createForm(new \Volleyball\Bundle\PasselBundle\Form\Type\AttendeeSearchFormType());
         
         if ("POST" == $request->getMethod()) {
-            $form->handleRequest($this->getRequest());
+            $form->handleRequest($request);
             if ($form->isValid()) {
-                /** @TODO finish attendee search, also restrict access */
-                $attendees = array();
+                $attendees = $this->repository()->search($request->getParameter('query'));
 
                 return $this->render(
                     'VolleyballPasselbundle:Attendee:index.html.twig',
@@ -109,5 +106,17 @@ class AttendeeController extends \Volleyball\Bundle\UtilityBundle\Controller\Uti
         }
 
         return array('attendee' => $attendee);
+    }
+    
+    /**
+     * @Route("/signup/attendee", name="volleyball_attendee_register")
+     * @Template("VolleyballResourceBundle:Register:attendee.html.twig")
+     */
+    public function registerAction()
+    {
+        return $this
+                ->container
+                ->get('pugx_multi_user.registation_manager')
+                ->register('\Volleyball\Bundle\PasselBundle\Entity\Attendee');
     }
 }

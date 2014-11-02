@@ -1,20 +1,20 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
+use \Doctrine\ORM\Mapping as ORM;
+use \Gedmo\Mapping\Annotation as Gedmo;
+use \Symfony\Component\Validator\Constraints as Assert;
+use \Doctrine\Common\Collections\ArrayCollection;
 
-use Volleyball\Bundle\PasselBundle\Traits\HasAttendeesTrait;
-use Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
-use Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
+use \Volleyball\Bundle\PasselBundle\Traits\HasAttendeesTrait;
+use \Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
+use \Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass="Volleyball\Bundle\PasselBundle\Repository\LevelRepository")
  * @ORM\Table(name="attendee_level")
  */
-class Level extends \Volleyball\Component\Passel\Model\Level
+class Level implements \Volleyball\Component\Passel\Interfaces\LevelInterface
 {
     use HasAttendeesTrait;
     use SluggableTrait;
@@ -28,33 +28,28 @@ class Level extends \Volleyball\Component\Passel\Model\Level
     protected $id;
 
     /**
-     * Name
      * @var  string name
      * @ORM\Column(name="name", type="string")
      */
-    protected $name = '';
+    protected $name;
     
     /**
-     * Description
-     *
      * @var string
      */
-    protected $description = '';
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\OrganizationBundle\Entity\Organization", inversedBy="level")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id")
-     */
-    protected $types = '';
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $special = false;
+    protected $special;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Volleyball\Bundle\OrganizationBundle\Entity\Organization", mappedBy="level")
+     */
+    protected $organizations;
     
     /**
      * Get id
-     *
      * @return integer
      */
     public function getId()
@@ -101,15 +96,37 @@ class Level extends \Volleyball\Component\Passel\Model\Level
     /**
      * @{inheritdocs}
      */
-    public function getOrganization()
+    public function getOrganizations()
     {
-        return $this->organization;
+        return $this->organizations;
+    }
+    
+    /**
+     * @{inheritdocs}
+     */
+    public function setOrganizations(array $organizations)
+    {
+        if (!$organizations instanceof ArrayCollection) {
+            $organizations = new ArrayCollection($organizations);
+        }
+        
+        $this->organizations = $organizations;
+        
+        return $this;
+    }
+    
+    /**
+     * @{inheritdocs}
+     */
+    public function getOrganization($organization)
+    {
+        return $this->organzations->get($organization);
     }
 
     /**
      * @{inheritdocs}
      */
-    public function setOrganization(\Volleyball\Component\Orgnaization\Model\Organization $organization)
+    public function addOrganization(\Volleyball\Bundle\OrganizationBundle\Entity\Organization $organization)
     {
         $this->organization = $organization;
 
@@ -136,5 +153,6 @@ class Level extends \Volleyball\Component\Passel\Model\Level
     public function __construct()
     {
         $this->attendees = new ArrayCollection();
+        $this->special = false;
     }
 }
