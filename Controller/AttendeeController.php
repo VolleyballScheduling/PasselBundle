@@ -10,32 +10,23 @@ use \Pagerfanta\Adapter\DoctrineORMAdapter;
 class AttendeeController extends \Volleyball\Bundle\UtilityBundle\Controller\UtilityController
 {
     /**
-     * @Route("/", name="volleyball_attendee_index")
-     * @Template("VolleyballPasselBundle:Attendee:index.html.twig")
+     * @Route("/attendees", name="volleyball_attendee_index")
+     * @Route("/passels/{passel}/attendees", name="volleyball_attendee_index_by_passel")
+     * @Route("/passels/{passel}/factions/{faction}/attendees", name="volleyball_attendee_index_by_faction")
+     * @Template("VolleyballResourceBundle:Attendee:index.html.twig")
      */
     public function indexAction(Request $request)
     {
-        $query = $this->get('doctrine')
-            ->getRepository('VolleyballPasselBundle:Attendee')
-            ->findAll();
-
-        $pager = new Pagerfanta(new DoctrineORMAdapter($query));
-        $pager->setMaxPerPage($this->getRequest()->get('pageMax', 5));
-        $pager->setCurrentPage($this->getRequest()->get('page', 1));
-
-        return array(
-          'attendees' => $pager->getCurrentPageResults(),
-          'pager'  => $pager
-        );
+        return parent::indexAction($request);
     }
 
     /**
-     * @Route("/new", name="volleyball_attendee_new")
+     * @Route("/attendees/new", name="volleyball_attendee_new")
      * @Template("VolleyballPasselbundle:Attendee:new.html.twig")
      */
     public function newAction(Request $request)
     {
-        $attendee = new \Volleyball\Bundle\PasselBundle\Entity\Attendee();
+        $attendee = $this->get('volleyball.repository.attendee')->createNew();
         $form = $this->createForm(
             new \Volleyball\Bundle\PasselBundle\Form\Type\AttendeeFormType(),
             $attendee
@@ -64,7 +55,7 @@ class AttendeeController extends \Volleyball\Bundle\UtilityBundle\Controller\Uti
     }
     
     /**
-     * @Route("/search", name="volleyball_attendee_search")
+     * @Route("/attendees/search", name="volleyball_attendee_search")
      * @Template("VolleyballPasselBundle:Attendee:search.html.twig")
      */
     public function searchAction(Request $request)
@@ -87,7 +78,7 @@ class AttendeeController extends \Volleyball\Bundle\UtilityBundle\Controller\Uti
     }
     
     /**
-     * @Route("/{slug}", name="volleyball_attendee_show")
+     * @Route("/attendees/{slug}", name="volleyball_attendee_show")
      * @Template("VolleyballPasselBundle:Attendee:show.html.twig")
      */
     public function showAction(Request $request)
@@ -108,15 +99,11 @@ class AttendeeController extends \Volleyball\Bundle\UtilityBundle\Controller\Uti
         return array('attendee' => $attendee);
     }
     
-    /**
-     * @Route("/signup/attendee", name="volleyball_attendee_register")
-     * @Template("VolleyballResourceBundle:Register:attendee.html.twig")
-     */
     public function registerAction()
     {
         return $this
                 ->container
-                ->get('pugx_multi_user.registation_manager')
-                ->register('\Volleyball\Bundle\PasselBundle\Entity\Attendee');
+                ->get('pugx_multi_user.registration_manager')
+                ->register('Volleyball\Bundle\PasselBundle\Entity\Attendee');
     }
 }

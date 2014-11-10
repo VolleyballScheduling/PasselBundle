@@ -12,7 +12,7 @@ use \Pagerfanta\View\TwitterBootstrapView;
 class LeaderController extends \Volleyball\Bundle\UtilityBundle\Controller\UtilityController
 {
     /**
-     * @Route("/", name="volleyball_leader_index")
+     * @Route("/leaders", name="volleyball_leader_index")
      * @Template("VolleyballPasselBundle:Leader:index.html.twig")
      */
     public function indexAction(Request $request)
@@ -32,7 +32,7 @@ class LeaderController extends \Volleyball\Bundle\UtilityBundle\Controller\Utili
     }
 
     /**
-     * @Route("/new", name="volleyball_leader_new")
+     * @Route("/leaders/new", name="volleyball_leader_new")
      * @Template("VolleyballPasselbundle:Leader:new.html.twig")
      */
     public function newAction(Request $request)
@@ -66,7 +66,7 @@ class LeaderController extends \Volleyball\Bundle\UtilityBundle\Controller\Utili
     }
     
     /**
-     * @Route("/search", name="volleyball_leader_search")
+     * @Route("/leaders/search", name="volleyball_leader_search")
      * @Template("VolleyballPasselBundle:Leader:search.html.twig")
      */
     public function searchAction(Request $request)
@@ -90,7 +90,7 @@ class LeaderController extends \Volleyball\Bundle\UtilityBundle\Controller\Utili
     }
     
     /**
-     * @Route("/{slug}", name="volleyball_leader_show")
+     * @Route("/leaders/{slug}", name="volleyball_leader_show")
      * @Template("VolleyballPasselBundle:Leader:show.html.twig")
      */
     public function showAction(Request $request)
@@ -109,5 +109,13 @@ class LeaderController extends \Volleyball\Bundle\UtilityBundle\Controller\Utili
         }
 
         return array('leader' => $leader);
+    }
+    
+    public function registerAction()
+    {
+        return $this
+                ->container
+                ->get('pugx_multi_user.registration_manager')
+                ->register('Volleyball\Bundle\PasselBundle\Entity\Leader');
     }
 }

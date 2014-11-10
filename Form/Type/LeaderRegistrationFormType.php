@@ -11,6 +11,11 @@ class LeaderRegistrationFormType extends \FOS\UserBundle\Form\Type\RegistrationF
 
             $builder->add('passel');
     }
+    
+    public function getParent()
+    {
+        return 'fos_user_registration';
+    }
 
     public function getName()
     {

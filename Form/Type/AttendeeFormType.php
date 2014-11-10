@@ -10,6 +10,9 @@ class AttendeeFormType extends \Symfony\Component\Form\AbstractType
         $builder->add('first_name');
         $builder->add('last_name');
 
+        /**
+         * @todo migrate to confiog file params and not hardcoded.
+         */
         $minYr = date('Y') - 18;
         $maxYr = date('Y') - 10;
         $years = array();
@@ -42,6 +45,24 @@ class AttendeeFormType extends \Symfony\Component\Form\AbstractType
             array(
                 'property' => 'name',
                 'class' => 'Volleyball\Bundle\PasselBundle\Entity\Passel'
+            )
+        );
+        
+        $builder->add(
+            'position',
+            'entity',
+            array(
+                'property' => 'name',
+                'class' => 'Volleyball\Bundle\PasselBundle\Entity\Position'
+            )
+        );
+        
+        $builder->add(
+            'level',
+            'entity',
+            array(
+                'property' => 'name',
+                'class' => 'Volleyball\Bundle\PasselBundle\Entity\Level'
             )
         );
     }

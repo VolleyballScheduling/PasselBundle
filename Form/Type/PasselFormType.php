@@ -9,6 +9,8 @@ class PasselFormType extends \Symfony\Component\Form\AbstractType
     ) {
         $builder->add('name');
         $builder->add('type');
+        $builder->add('organization');
+        $builder->add('council');
         $builder->add('region');
         $builder->add('leader');
     }

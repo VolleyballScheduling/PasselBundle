@@ -9,7 +9,7 @@ class TypeFormType extends \Symfony\Component\Form\AbstractType
     ) {
         $builder->add('name');
         $builder->add('description');
-        $builder->add('organization');
+        $builder->add('organizations');
     }
 
     public function getName()

@@ -110,7 +110,7 @@ class Type extends \Volleyball\Component\Passel\Model\Type
     
     public function setOrganizations(array $organizations)
     {
-        if (!organizations instanceof ArrayCollection) {
+        if (!$organizations instanceof ArrayCollection) {
             $organizations = new ArrayCollection($organizations);
         }
         

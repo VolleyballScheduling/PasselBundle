@@ -8,8 +8,9 @@ class LevelFormType extends \Symfony\Component\Form\AbstractType
         array $options
     ) {
         $builder->add('name');
+        $builder->add('description');
         $builder->add('special');
-        $builder->add('organization');
+        $builder->add('organizations');
     }
 
     public function getName()

@@ -12,6 +12,11 @@ class AttendeeRegistrationFormType extends \FOS\UserBundle\Form\Type\Registratio
             $builder->add('passel');
             $builder->add('faction');
     }
+    
+    public function getParent()
+    {
+        return 'fos_user_registration';
+    }
 
     public function getName()
     {
