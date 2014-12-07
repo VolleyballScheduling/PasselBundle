@@ -1,36 +1,12 @@
+parameters:
+    volleyball.flow.scenario.attendee_register: Volleyball\Bundle\PasselBundle\Process\Scenario\AttendeeRegistrationScenario
+    volleyball.flow.scenario.leader_register: Volleyball\Bundle\PasselBundle\Process\Scenario\LeaderRegistrationScenario
 services:
-    volleyball.controller.attendee:
-        class: Volleyball\Bundle\PasselBundle\Controller\AttendeeController
-        factory_service: sylius.controller.configuration_factory
-        factory_method: createConfiguration
-        arguments: ["sylius", "attendee", "VolleyballPasselBundle:Attendee"]
-    volleyball.controller.faction:
-        class: Volleyball\Bundle\PasselBundle\Controller\FactionController
-        factory_service: sylius.controller.configuration_factory
-        factory_method: createConfiguration
-        arguments: ["sylius", "faction", "VolleyballPasselBundle:Faction"]
-    volleyball.controller.leader:
-        class: Volleyball\Bundle\PasselBundle\Controller\LeaderController
-        factory_service: sylius.controller.configuration_factory
-        factory_method: createConfiguration
-        arguments: ["sylius", "leader", "VolleyballPasselBundle:Leader"]
-    volleyball.controller.level:
-        class: Volleyball\Bundle\PasselBundle\Controller\LevelController
-        factory_service: sylius.controller.configuration_factory
-        factory_method: createConfiguration
-        arguments: ["sylius", "level", "VolleyballPasselBundle:Level"]
-    volleyball.controller.passel:
-        class: Volleyball\Bundle\PasselBundle\Controller\PasselController
-        factory_service: sylius.controller.configuration_factory
-        factory_method: createConfiguration
-        arguments: ["sylius", "passel", "VolleyballPasselBundle:Passel"]
-    volleyball.controller.position:
-        class: Volleyball\Bundle\PasselBundle\Controller\PositionController
-        factory_service: sylius.controller.configuration_factory
-        factory_method: createConfiguration
-        arguments: ["sylius", "attendee_position", "VolleyballPasselBundle:Position"]
-    volleyball.controller.passel_type:
-        class: Volleyball\Bundle\PasselBundle\Controller\TypeController
-        factory_service: sylius.controller.configuration_factory
-        factory_method: createConfiguration
-        arguments: ["sylius", "passel_type", "VolleyballPasselBundle:Type"]
+    volleyball.scenario.attendee_register.flow:
+        class: %volleyball.flow.scenario.attendee_register%
+        tags: [{ name: sylius.process.scenario, alias: volleyball.attendee_register.flow }]
+        calls: [[setContainer, [@service_container]]]
+    volleyball.scenario.leader_register.flow:
+        class: %volleyball.flow.scenario.leader_register%
+        tags: [{ name: sylius.process_scenario, alias: volleyball.leader_register.flow }]
+        calls: [[setContainer, [@service_container]]]

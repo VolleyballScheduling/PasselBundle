@@ -155,4 +155,13 @@ class Level implements \Volleyball\Component\Passel\Interfaces\LevelInterface
         $this->attendees = new ArrayCollection();
         $this->special = false;
     }
+    
+    /**
+     * To string
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

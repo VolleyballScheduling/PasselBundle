@@ -106,4 +106,13 @@ class Faction implements \Volleyball\Component\Passel\Interfaces\FactionInterfac
 
         return $this;
     }
+    
+    /**
+     * To string
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

@@ -118,4 +118,13 @@ class Position extends \Volleyball\Component\Passel\Model\Position
     {
         $this->attendees = new ArrayCollection();
     }
+    
+    /**
+     * To string
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

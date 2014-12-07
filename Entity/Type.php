@@ -147,4 +147,13 @@ class Type extends \Volleyball\Component\Passel\Model\Type
         $this->attendees = new ArrayCollection();
         $this->organizations = new ArrayCollection();
     }
+    
+    /**
+     * To string
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

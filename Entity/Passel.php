@@ -383,4 +383,13 @@ class Passel implements \Volleyball\Component\Passel\Interfaces\PasselInterface
         $this->attendees = new ArrayCollection();
         $this->enrollments = new ArrayCollection();
     }
+    
+    /**
+     * To string
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

@@ -254,4 +254,13 @@ class Leader extends \Volleyball\Bundle\UserBundle\Entity\User implements \Volle
 
         return $this->primary;
     }
+    
+    /**
+     * To string
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->firstName.' '.$this->lastName;
+    }
 }

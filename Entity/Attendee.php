@@ -659,4 +659,13 @@ class Attendee extends \Volleyball\Bundle\UserBundle\Entity\User implements \Vol
     {
         $this->enrollments = new ArrayCollection();
     }
+    
+    /**
+     * To string
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->firstName.' '.$this->lastName;
+    }
 }
