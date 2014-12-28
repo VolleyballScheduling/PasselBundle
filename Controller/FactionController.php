@@ -112,4 +112,16 @@ class FactionController extends \Volleyball\Bundle\UtilityBundle\Controller\Util
 
         return array('faction' => $faction);
     }
+    
+    /**
+     * @Route("/widget", name="volleyball_faction_widget")
+     */
+    public function widgetAction(Request $request)
+    {
+        $factions = $this->getDoctrine()
+                ->getRepository('VolleyballPasselBundle:Faction')
+                ->findAllByPassel($this->securityContext->getToken()->getUser()->getActiveEnrollment()->getPassel());
+        
+        return $factions;
+    }
 }

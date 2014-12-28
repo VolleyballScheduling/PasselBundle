@@ -111,11 +111,11 @@ class LeaderController extends \Volleyball\Bundle\UtilityBundle\Controller\Utili
         return array('leader' => $leader);
     }
     
-    public function registerAction()
+    public function registerAction(Request $request)
     {
         return $this
                 ->container
-                ->get('pugx_multi_user.registration_manager')
+                ->get('volleyball.user.registration_manager')
                 ->register('Volleyball\Bundle\PasselBundle\Entity\Leader');
     }
 }

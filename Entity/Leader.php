@@ -5,7 +5,7 @@ use \Doctrine\ORM\Mapping as ORM;
 use \Doctrine\Common\Collections\ArrayCollection;
 use \Gedmo\Mapping\Annotation as Gedmo;
 use \Symfony\Component\Validator\Constraints as Assert;
-use \PUGX\MultiUserBundle\Validator\Constraints\UniqueEntity;
+use \Volleyball\Bundle\UserBundle\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
@@ -13,32 +13,23 @@ use \PUGX\MultiUserBundle\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(fields = "username", targetClass = "Volleyball\Bundle\UserBundle\Entity\User", message="fos_user.username_already")
  * @UniqueEntity(fields = "email", targetClass = "Volleyball\Bundle\UserBundle\Entity\User", message="fos_user.email_already")
  */
-class Leader extends \Volleyball\Bundle\UserBundle\Entity\User implements \Volleyball\Component\Passel\Interfaces\LeaderInterface
+class Leader extends \Volleyball\Bundle\UserBundle\Entity\User
 {
     /**
-     * @var integer $id
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Passel", inversedBy="leader")
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Passel", inversedBy="passel_leader")
      * @ORM\JoinColumn(name="passel_id", referencedColumnName="id")
      */
     protected $passel;
 
     /**
-     * Admin - if true, user can make limited changes to the passel
-     * @var boolean
+     * @ORM\Column(type="boolean")
      */
     protected $admin;
 
     /**
-     * @var boolean
+     * @ORM\Column(type="boolean")
      */
-    protected $primary;
+    protected $primary_admin;
     
     /**
      * @ORM\Column(type="string")
@@ -86,7 +77,7 @@ class Leader extends \Volleyball\Bundle\UserBundle\Entity\User implements \Volle
     protected $birthdate;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment", inversedBy="passel_leader")
      * @ORM\JoinColumn(name="activeEnrollment_id", referencedColumnName="id", nullable=true)
      */
     protected $activeEnrollment;
@@ -126,6 +117,12 @@ class Leader extends \Volleyball\Bundle\UserBundle\Entity\User implements \Volle
      */
     protected $foursquareId;
 
+    public function __construct()
+    {
+        $this->admin = false;
+        $this->primary_admin = false;
+    }
+    
     /**
      * @var string
      *

@@ -5,7 +5,7 @@ use \Doctrine\ORM\Mapping as ORM;
 use \Doctrine\Common\Collections\ArrayCollection;
 use \Gedmo\Mapping\Annotation as Gedmo;
 use \Symfony\Component\Validator\Constraints as Assert;
-use \PUGX\MultiUserBundle\Validator\Constraints\UniqueEntity;
+use \Volleyball\Bundle\UserBundle\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Table(name="attendee")
@@ -21,7 +21,7 @@ use \PUGX\MultiUserBundle\Validator\Constraints\UniqueEntity;
  *      message="fos_user.email_already"
  * )
  */
-class Attendee extends \Volleyball\Bundle\UserBundle\Entity\User implements \Volleyball\Component\Passel\Interfaces\AttendeeInterface
+class Attendee extends \Volleyball\Bundle\UserBundle\Entity\User
 {
     /**
      * @var integer $id

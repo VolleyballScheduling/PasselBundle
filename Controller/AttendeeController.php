@@ -106,4 +106,16 @@ class AttendeeController extends \Volleyball\Bundle\UtilityBundle\Controller\Uti
                 ->get('pugx_multi_user.registration_manager')
                 ->register('Volleyball\Bundle\PasselBundle\Entity\Attendee');
     }
+    
+    /**
+     * @Route("/widget", name="volleyball_attendee_widget")
+     */
+    public function widgetAction(Request $request)
+    {
+        $factions = $this->getDoctrine()
+                ->getRepository('VolleyballPasselBundle:Attendee')
+                ->findAllByPassel($this->getUser()->getPassel());
+        
+        return $factions;
+    }
 }
