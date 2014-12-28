@@ -14,7 +14,7 @@ use \Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
  * @ORM\Table(name="passel")
  * @ORM\Entity(repositoryClass="Volleyball\Bundle\PasselBundle\Repository\PasselRepository")
  */
-class Passel implements \Volleyball\Component\Passel\Interfaces\PasselInterface
+class Passel
 {
     use HasAttendeesTrait;
     use SluggableTrait;

@@ -13,7 +13,7 @@ use \Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
  * @ORM\Entity(repositoryClass="Volleyball\Bundle\PasselBundle\Repository\FactionRepository")
  * @ORM\Table(name="faction")
  */
-class Faction implements \Volleyball\Component\Passel\Interfaces\FactionInterface
+class Faction
 {
     use HasAttendeesTrait;
     use SluggableTrait;

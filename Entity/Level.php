@@ -14,7 +14,7 @@ use \Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
  * @ORM\Entity(repositoryClass="Volleyball\Bundle\PasselBundle\Repository\LevelRepository")
  * @ORM\Table(name="attendee_level")
  */
-class Level implements \Volleyball\Component\Passel\Interfaces\LevelInterface
+class Level
 {
     use HasAttendeesTrait;
     use SluggableTrait;
