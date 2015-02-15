@@ -1,19 +1,12 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Entity;
 
-use \Doctrine\ORM\Mapping as ORM;
-use \Gedmo\Mapping\Annotation as Gedmo;
-use \Symfony\Component\Validator\Constraints as Assert;
 use \Doctrine\Common\Collections\ArrayCollection;
 
-use \Volleyball\Bundle\PasselBundle\Traits\HasAttendeesTrait;
-use \Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
-use \Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
+use \Volleyball\Bundle\AttendeeBundle\Traits\HasAttendeesTrait;
+use \Volleyball\Bundle\CoreBundle\Traits\SluggableTrait;
+use \Volleyball\Bundle\CoreBundle\Traits\TimestampableTrait;
 
-/**
- * @ORM\Table(name="passel")
- * @ORM\Entity(repositoryClass="Volleyball\Bundle\PasselBundle\Repository\PasselRepository")
- */
 class Passel
 {
     use HasAttendeesTrait;
@@ -21,66 +14,61 @@ class Passel
     use TimestampableTrait;
     
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * Id
+     * @var integer
      */
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
-     * @Assert\Length(
-     *      min = "1",
-     *      max = "250",
-     *      minMessage = "Name must be at least {{ limit }} characters length",
-     *      maxMessage = "Name cannot be longer than {{ limit }} characters length"
-     * )
+     * Name
      * @var string
      */
     protected $name;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Type", inversedBy="passel")
-     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
+     * Passel type
+     * @var \Volleyball\Bundle\PasselBundle\Entity\Type 
      */
     protected $type;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\OrganizationBundle\Entity\Organization", inversedBy="passel")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id")
+     * Organization
+     * @var \Volleyball\Bundle\OrganizatinoBundle\Entity\Organization
      */
     protected $organization;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\OrganizationBundle\Entity\Council", inversedBy="passel")
-     * @ORM\JoinColumn(name="council_id", referencedColumnName="id")
+     * Council
+     * @var \Volleyball\Bundle\OrganizationBundle\Entity\Council
      */
     protected $council;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\OrganizationBundle\Entity\Region", inversedBy="passel")
-     * @ORM\JoinColumn(name="region_id", referencedColumnName="id")
+     * Region
+     * @var \Volleyball\Bundle\OrganizationBundle\Entity\Region
      */
     protected $region;
         
     /**
-     * @ORM\OneToMany(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Faction", mappedBy="passel")
+     * Factions
+     * @var \Doctrine\Common\Collections\ArrayCollection 
      */
     protected $factions;
     
     /**
-     * @ORM\OneToMany(targetEntity="Leader", mappedBy="passel")
+     * Leaders
+     * @var \Doctrine\Common\Collections\ArrayCollection
      */
     protected $leaders;
     
     /**
-     * @ORM\OneToMany(targetEntity="Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment", mappedBy="passel")
+     * Enrollments
+     * @var \Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment
      */
     protected $enrollments;
     
     /**
      * Get id
-     *
      * @return integer
      */
     public function getId()
@@ -89,7 +77,8 @@ class Passel
     }
     
     /**
-     * @{inheritdocs}
+     * Get name
+     * @return string
      */
     public function getName()
     {
@@ -97,7 +86,9 @@ class Passel
     }
 
     /**
-     * @{inheritdocs}
+     * Set name
+     * @param string $name
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Passel
      */
     public function setName($name)
     {
@@ -107,7 +98,8 @@ class Passel
     }
 
     /**
-     * @{inheritdocs}
+     * Get factions
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getFactions()
     {
@@ -115,7 +107,9 @@ class Passel
     }
 
     /**
-     * @{inheritdocs}
+     * Set factions
+     * @param array $factions
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Passel
      */
     public function setFactions(array $factions)
     {
@@ -138,7 +132,9 @@ class Passel
     }
 
     /**
-     * @{inheritdocs}
+     * Get faction
+     * @param string $faction
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Faction
      */
     public function getFaction($faction)
     {
@@ -146,7 +142,9 @@ class Passel
     }
 
     /**
-     * @{inheritdocs}
+     * Add faction
+     * @param \Volleyball\Bundle\PasselBundle\Entity\Faction $faction
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Passel
      */
     public function addFaction(\Volleyball\Bundle\PasselBundle\Entity\Faction $faction)
     {
@@ -156,7 +154,9 @@ class Passel
     }
 
     /**
-     * @{inheritdocs}
+     * Remove faction
+     * @param string $faction
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Passel
      */
     public function removeFaction($faction)
     {
@@ -166,7 +166,8 @@ class Passel
     }
 
     /**
-     * @{inheritdocs}
+     * Get organization
+     * @return \Volleyball\Bundle\OrganizationBundle\Entity\Organization
      */
     public function getOrganization()
     {
@@ -174,7 +175,9 @@ class Passel
     }
     
     /**
-     * @{inheritdocs}
+     * Set organization
+     * @param \Volleyball\Bundle\OrganizationBundle\Entity\Organization $organization
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Passel
      */
     public function setOrganization(\Volleyball\Bundle\OrganizationBundle\Entity\Organization $organization)
     {
@@ -184,7 +187,8 @@ class Passel
     }
     
     /**
-     * @{inheritdocs}
+     * Get council
+     * @return \Volleyball\Bundle\OrganizationBundle\Entity\Council
      */
     public function getCouncil()
     {
@@ -192,7 +196,9 @@ class Passel
     }
 
     /**
-     * @{inheritdocs}
+     * Set council
+     * @param \Volleyball\Bundle\OrganizationBundle\Entity\Council $council
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Passel
      */
     public function setCouncil(\Volleyball\Bundle\OrganizationBundle\Entity\Council $council)
     {
@@ -202,7 +208,8 @@ class Passel
     }
 
     /**
-     * @{inheritdocs}
+     * Get regionorganizationBundle\Entity\Region
+     * @return \Volleyball\Bundle\
      */
     public function getRegion()
     {
@@ -210,7 +217,9 @@ class Passel
     }
 
     /**
-     * @{inheritdocs}
+     * Set region
+     * @param \Volleyball\Bundle\OrganizationBundle\Entity\Region $region
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Passel
      */
     public function setRegion(\Volleyball\Bundle\OrganizationBundle\Entity\Region $region)
     {
@@ -220,7 +229,8 @@ class Passel
     }
 
     /**
-     * @{inheritdocs}
+     * Get leaders
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getLeaders()
     {
@@ -228,7 +238,9 @@ class Passel
     }
 
     /**
-     * @{inheritdocs}
+     * Set leaders
+     * @param array $leaders
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Passel
      */
     public function setLeaders(array $leaders)
     {
@@ -242,7 +254,8 @@ class Passel
     }
 
     /**
-     * @{inheritdocs}
+     * Has leaders
+     * @return boolean
      */
     public function hasLeaders()
     {
@@ -250,7 +263,9 @@ class Passel
     }
 
     /**
-     * @{inheritdocs}
+     * Add leader
+     * @param \Volleyball\Bundle\PasselBundle\Entity\Leader $leader
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Passel
      */
     public function addLeader(Leader $leader)
     {
@@ -260,7 +275,9 @@ class Passel
     }
 
     /**
-     * @{inheritdocs}
+     * Remove leader
+     * @param string $leader
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Passel
      */
     public function removeLeader($leader)
     {
@@ -270,11 +287,9 @@ class Passel
     }
 
     /**
-     * Get a leader
-     *
-     * @param Leader|String $leader leader
-     *
-     * @return Leader
+     * Get leader
+     * @param string $leader
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Leader
      */
     public function getLeader($leader)
     {
@@ -282,8 +297,8 @@ class Passel
     }
 
     /**
-     * Get passel enrollments
-     * @return array
+     * Get enrollments
+     * @return \Doctirne\Common\Collections\ArrayCollection
      */
     public function getEnrollments()
     {
@@ -291,7 +306,7 @@ class Passel
     }
 
     /**
-     * Set passel enrollments
+     * Set enrollments
      * @param array $enrollments
      * @return \Volleyball\Bundle\PasselBundle\Entity\Passel
      */
@@ -316,7 +331,7 @@ class Passel
     }
 
     /**
-     * Add passel enrollment
+     * Add enrollment
      * @param \Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment $enrollment
      * @return \Volleyball\Bundle\PasselBundle\Entity\Passel
      */
@@ -328,8 +343,8 @@ class Passel
     }
 
     /**
-     * Remove passel enrollment
-     * @param string|\Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment $enrollment
+     * Remove enrollment
+     * @param string $enrollment
      * @return \Volleyball\Bundle\PasselBundle\Entity\Passel
      */
     public function removeEnrollment($enrollment)
@@ -340,11 +355,9 @@ class Passel
     }
 
     /**
-     * Get a passel enrollment
-     *
-     * @param \Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment|String $enrollment enrollment
-     *
-     * @return Enrollment
+     * Get enrollment
+     * @param string $enrollment
+     * @return \Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment
      */
     public function getEnrollment($enrollment)
     {
@@ -352,7 +365,8 @@ class Passel
     }
 
     /**
-     * @{inheritdocs}
+     * Get type
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Type
      */
     public function getType()
     {
@@ -360,7 +374,9 @@ class Passel
     }
 
     /**
-     * @{inheritdocs}
+     * Set type
+     * @param \Volleyball\Bundle\PasselBundle\Entity\Type $type
+     * @return boolean|\Volleyball\Bundle\PasselBundle\Entity\Passel
      */
     public function setType(\Volleyball\Bundle\PasselBundle\Entity\Type $type)
     {

@@ -1,0 +1,256 @@
+Volleyball\Bundle\Entity\Passel:
+    type: entity
+    table: passel
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        name:
+            type: string
+        created:
+            type: date
+            gedmo:
+                timestampable:
+                    on: create
+        updated:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+        slug:
+            type: string
+            length: 128
+            gedmo:
+                slug:
+                    fields:
+                        - name
+    manyToOne:
+        passel_type:
+            targetEntity: Volleyball\Bundle\PasselBundle\Entity\PasselType
+            inversedBy: passels
+            joinColumn:
+                name: passel_type_id
+                referencedColumnName: id
+        organziation:
+            targetEntity: Volleyball\Bundle\OrganizationBundle\Entity\Organization
+            inversedBy: passels
+            joinColumn:
+                name: organization_id
+                referencedColumnName: id
+        council:
+            targetEntity: Volleyball\Bundle\OrganizationBundle\Entity\Council
+            inversedBy: passels
+            joinColumn:
+                name: council_id
+                referencedColumnName: id
+        region:
+            targetEntity: Volleyball\Bundle\OrganizationBundle\Entity\Region
+            inversedBy: passels
+            joinColumn:
+                name: region_id
+                referencedColumnName: id
+    oneToMany:
+        factions:
+            targetEntity: Volleyball\Bundle\PasselBundle\Entity\Faction
+            mappedBy: passel
+        leaders:
+            targetEntity: Volleyball\Bundle\PasselBundle\Entity\Leader
+            mappedBy: passel
+        attendees:
+            targetEntity: Volleyball\Bundle\AttendeeBundle\Entity\Attendee
+            mappedBy: passel
+        enrollments:
+            targetEntity: Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment
+            mappedBy: passel
+    indexes:
+        search_idx:
+            columns: slug
+    properties:
+        name:
+            - Length:
+                min: 1
+                max: 250
+                minMessage: "Name must be at least {{ limit }} characters length"
+                maxMessage: "Name cannot be longer than {{ limit }} characters length"
+Volleyball\Bundle\Entity\Faction:
+    type: entity
+    table: faction
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        name:
+            type: string
+        avatar:
+            type: string
+            nullable: true
+            options:
+                default: bundles/volleyballpassel/img/faction/avatar/default.png
+        createdAt:
+            type: date
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+        slug:
+            type: string
+            length: 128
+            gedmo:
+                slug:
+                    fields:
+                        - name
+    manyToOne:
+        passel:
+            targetEntity: Volleyball\Bundle\PasselBundle\Entity\Passel
+            inversedBy: factions
+            joinColumn:
+                name: passel_id
+                referencedColumnName: id
+    oneToMany:
+        attendees:
+            targetEntity: Volleyball\Bundle\AttendeeBundle\Entity\Attendee
+            mappedBy: faction
+    indexes:
+        search_idx:
+            columns: slug
+    properties:
+        name:
+            - Length:
+                min: 2
+                max: 50
+                minMessage: "Name must be at least {{ limit }} characters length"
+                maxMessage: "Name cannot be longer than {{ limit }} characters length"
+Volleyball\Bundle\PasselBundle\Entity\Type:
+    type: entity
+    table: passel_type
+    id:
+        id:
+            type: integer
+            generate: { strategy: AUTO }
+    fields:
+        name:
+            type: string
+        description:
+            type: string
+            nullable: true
+        createdAt:
+            type: date
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+        slug:
+            type: string
+            length: 128
+            gedmo:
+                slug:
+                    fields:
+                        - name
+    ManyToMany:
+        organizations:
+            targetEntity: Volleyball\Bundle\OrganizationBundle\Entity\Orgnaization
+            inversedBy: passel_type
+            joinTable:
+                name: passel_types_organizations
+    oneToMany:
+        passels:
+            targetEntity: Volleyball\Bundle\PasselBundle\Entity\Passel
+            mappedBy: passel_type
+Volleyball\Bundle\PasselBundle\Entity\Leader:
+    type: entity
+    table: leader
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        firstName:
+            type: string
+        lastName:
+            type: string
+        gender:
+            type: string
+        birthdate:
+            type: datetime
+        avatar:
+            type: string
+            options:
+                default: /bundles/volleyballuser/img/avatars/default.png
+        primary_admin:
+            type: boolean
+            options:
+                default: false
+        slug:
+            type: string
+            length: 128
+            gedmo:
+                slug:
+                    fields: { firstName, lastName }
+        createdAt:
+            type: date
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+    manyToOne:
+        passel:
+            targetEntity: Volleyball\Bundle\PasselBundle\Entity\Passel
+            inversedBy: leader
+            joinColumn:
+                name: passel_id
+                referencedXColumnName: id
+        activeEnrollment:
+            targetEntity: Volleyball\Bundle\EnrollmentBundle\Entity\ActiveEnrollment
+            inversedBy: leader
+            joinColumn: 
+                name: active_enrollment_id
+                referencedColumnName: id
+    oneToMany:
+        enrollments:
+            targetEntity: Volleyball\Bundle\EnrollmentBundle\Entity\LeaderEnrollment
+            mappedBy: leader
+    properties:
+        firstName:
+            - Length:
+                min: 2
+                max: 250
+                minMessage: "First name must be atleast {{ limit }} characters."
+                maxMessage: "First name must be less than {{ limit }} characters."
+            - NotBlank:
+                message: "Please enter your first name."
+                groups: { "registration", "profile" }                   
+        lastName:
+            - Length:
+                min: 2
+                max: 250
+                minMessage: "Last name must be atleast {{ limit }} characters."
+                maxMessage: "Last name must be less than {{ limit }} characters."
+            - NotBlank:
+                    message: "Please enter your lsrst name."
+                    groups: { "registration", "profile" }   
+        gender:
+            - Length:
+                min: 1
+                max: 1
+                minMessage: "Last name must be atleast {{ limit }} characters."
+                maxMessage: "Last name must be less than {{ limit }} characters."
+            - Choice:
+                choices: [m, f]
+                message: Choose a valid gender.
+        birthdate:
+            - Date: ~
+        avatar: ~

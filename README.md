@@ -1,88 +1,44 @@
-#Volleyball
-##Summer Camp Scheduling System
-###Passel Bundle
+Installation
+============
 
-This is a bundle utilizing the passel component of the Volleyball Scheduling system.
+Step 1: Download the Bundle
+---------------------------
 
-##Documentation
-- [Passel](Resources/doc/passel.md)
-- [Passel Type](Resources/doc/type.md)
-- [Faction](Resources/doc/faction.md)
-- [Leader](Resources/doc/leader.md)
-- [Attendee Level](Resources/doc/level.md)
-- [Attendee Position](Resources/doc/position.md)
-- [Attendee](Resources/doc/attendee.md)
+Open a command console, enter your project directory and execute the
+following command to download the latest stable version of this bundle:
 
-##Overview
-###Controllers
-- PasselController
-- TypeController
-- FactionController
-- LeaderController
-- LevelController
-- PositionController
-- AttendeeController
+```bash
+$ composer require VolleyballScheduling/PasselBundle "~1"
+```
 
-###Entities
-- Passel
-- Type
-- Faction
-- Leader
-- Level
-- Position
-- Attendee
+This command requires you to have Composer installed globally, as explained
+in the [installation chapter](https://getcomposer.org/doc/00-intro.md)
+of the Composer documentation.
 
-###Form Types
-- PasselFormType
-- PasselSearchFormType
-- TypeFormType
-- TypeSearchFormType
-- FactionFormType
-- FactionSearchFormType
-- LeaderFormType
-- LeaderSearchFormType
-- LevelFormType
-- LevelSearchFormType
-- PositionFormType
-- PositionSearchFormType
-- AttendeeFormType
-- AttendeeSearchFormType
+Step 2: Enable the Bundle
+-------------------------
 
-###Repositories
-- PasselRepository
-- TypeRepository
-- FactionRepository
-- LeaderRepository
-- LevelRepository
-- PositionRepository
-- AttendeeRepository
+Then, enable the bundle by adding the following line in the `app/AppKernel.php`
+file of your project:
 
-###Routes
-Route Name | Route Path
----|---
-volleyball_passel_index | /passels
-volleyball_passel_show | /passels/{slug}
-volleyball_passel_new | /passels/new
-volleyball_passel_type_index | /passels/types
-volleyball_passel_type_show | /passels/types/{slug}
-volleyball_passel_type_new | /passels/types/new
-volleyball_faction_index | /factions
-volleyball_faction_show | /factions/{slug}
-volleyball_faction_new | /factions/new
-volleyball_leader_index | /leaders
-volleyball_leader_show | /leaders/{slug}
-volleyball_leader_new | /leaders/new
-volleyball_attendee_level_index | /attendees/levels
-volleyball_attendee_level_show | /attendees/levels/{slug}
-volleyball_attendee_level_new | /attendees/levels/new
-volleyball_attendee_position_index | /attendees/positions
-volleyball_attendee_position_show | /attendees/positions/{slug}
-volleyball_attendee_position_new | /attendees/positions/new
-volleyball_attendee_index | /attendees
-volleyball_attendee_show | /attendees/{slug}
-volleyball_attendee_new | /attendees/new
+```php
+<?php
+// app/AppKernel.php
 
-###Services
+// ...
+class AppKernel extends Kernel
+{
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
 
-###Traits
-- HasAttendeesTrait
+            new \Volleyball\Bundle\PasselBundle\VolleyballPasselBundle(),
+        );
+
+        // ...
+    }
+
+    // ...
+}
+```

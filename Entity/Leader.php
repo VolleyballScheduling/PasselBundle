@@ -1,105 +1,67 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Entity;
 
-use \Doctrine\ORM\Mapping as ORM;
 use \Doctrine\Common\Collections\ArrayCollection;
-use \Gedmo\Mapping\Annotation as Gedmo;
-use \Symfony\Component\Validator\Constraints as Assert;
-use \Volleyball\Bundle\UserBundle\Validator\Constraints\UniqueEntity;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="passel_leader")
- * @UniqueEntity(fields = "username", targetClass = "Volleyball\Bundle\UserBundle\Entity\User", message="fos_user.username_already")
- * @UniqueEntity(fields = "email", targetClass = "Volleyball\Bundle\UserBundle\Entity\User", message="fos_user.email_already")
- */
 class Leader extends \Volleyball\Bundle\UserBundle\Entity\User
 {
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Passel", inversedBy="passel_leader")
-     * @ORM\JoinColumn(name="passel_id", referencedColumnName="id")
+     * Passel
+     * @var \Volleyball\Bundle\PasselBundle\Entity\Passel
      */
     protected $passel;
 
     /**
-     * @ORM\Column(type="boolean")
+     * PrimaryAdmin
+     * @var boolean 
      */
-    protected $admin;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $primary_admin;
+    protected $primaryAdmin;
     
     /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Please enter your first name.", groups={"Registration", "Profile"})
-     * @Assert\Length(
-     *     min="3",
-     *     minMessage="The name is too short.",
-     *     groups={"Registration", "Profile"},
-     *     max="255",
-     *     maxMessage="The name is too long."
-     *)
+     * FirstName
+     * @var string 
      */
     protected $firstName;
 
     /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Please enter your last name.", groups={"Registration", "Profile"})
-     * @Assert\Length(
-     *     min="3",
-     *     minMessage="The name is too short.",
-     *     groups={"Registration", "Profile"},
-     *     max="255",
-     *     maxMessage="The name is too long."
-     *)
+     * LastName
+     * @var string 
      */
     protected $lastName;
 
     /**
-     * @ORM\Column(type="string")
-     * @Assert\Length(
-     *      min = "1",
-     *      max = "1",
-     *      minMessage = "Must be at least {{ limit }} characters length",
-     *      maxMessage = "Cannot be longer than {{ limit }} characters length"
-     * )
-     * @Assert\NotBlank()
-     * @Assert\Choice(choices = {"M", "F"})
+     * Gender
+     * @var string
      */
     protected $gender;
    
     /**
-     * @ORM\Column(type="date")
-     * @Assert\NotBlank()
+     * Birthdate
+     * @var \DateTime 
      */
     protected $birthdate;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment", inversedBy="passel_leader")
-     * @ORM\JoinColumn(name="activeEnrollment_id", referencedColumnName="id", nullable=true)
+     * ActiveEnrollment
+     * @var \Volleyball\Bundle\EnrollmentBundle\Entity\ActiveEnrollment
      */
     protected $activeEnrollment;
 
     /**
+     * FacebookId
      * @var string
-     *
-     * @ORM\Column(name="facebookId", type="string", length=255, nullable=true)
      */
     protected $facebookId;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="googleId", type="string", length=255, nullable=true)
+     * GoogleId
+     * @var string 
      */
     protected $googleId;
 
     /**
+     * LinkedinId
      * @var string
-     *
-     * @ORM\Column(name="linkedinId", type="string", length=255, nullable=true)
      */
     protected $linkedinId;
 
@@ -111,33 +73,34 @@ class Leader extends \Volleyball\Bundle\UserBundle\Entity\User
     protected $twitterId;
 
     /**
+     * FoursquareId
      * @var string
-     *
-     * @ORM\Column(name="foursquareId", type="string", length=255, nullable=true)
      */
     protected $foursquareId;
 
+    /**
+     * Construct
+     */
     public function __construct()
     {
-        $this->admin = false;
-        $this->primary_admin = false;
+        $this->primaryAdmin = false;
     }
     
     /**
+     * Avatar
      * @var string
-     *
-     * @ORM\Column(name="avatar", type="string", length=255)
      */
-    protected $avatar = '/bundles/volleyballresource/images/avatars/default.png';
+    protected $avatar = '/bundles/volleyballuser/img/avatars/default.png';
 
     /**
-    * @Gedmo\Slug(fields={"lastName", "firstName"})
-    * @ORM\Column(length=128, unique=true)
-    */
+     * Slug
+     * @var string
+     */
     protected $slug;
 
     /**
      * Get slug
+     * @return type
      */
     public function getSlug()
     {
@@ -146,6 +109,8 @@ class Leader extends \Volleyball\Bundle\UserBundle\Entity\User
 
     /**
      * Set slug
+     * @param string $slug
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Leader
      */
     public function setSlug($slug = null)
     {
@@ -160,13 +125,17 @@ class Leader extends \Volleyball\Bundle\UserBundle\Entity\User
         return $this;
     }
 
+    /**
+     * GetName
+     * @return string
+     */
     public function getName()
     {
         return $this->firstName.' '.$this->lastName;
     }
 
     /**
-     * Get the full name of the user (first + last name)
+     * Get full name
      * @return string
      */
     public function getFullName()
@@ -175,10 +144,9 @@ class Leader extends \Volleyball\Bundle\UserBundle\Entity\User
     }
 
     /**
-     * Set activeEnrollment
-     *
-     * @param  Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment $activeEnrollment
-     * @return User
+     * Set active enrollments
+     * @param \Volleyball\Bundle\EnrollmentBundle\Entity\ActiveEnrollment $activeEnrollment
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Leader
      */
     public function setActiveEnrollment(\Volleyball\Bundle\EnrollmentBundle\Entity\ActiveEnrollment $activeEnrollment = null)
     {
@@ -188,9 +156,8 @@ class Leader extends \Volleyball\Bundle\UserBundle\Entity\User
     }
 
     /**
-     * Get activeEnrollment
-     *
-     * @return Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment
+     * Get active enrollment
+     * @return \Volleyball\Bundle\EnrollmentBundle\Entity\ActiveEnrollment
      */
     public function getActiveEnrollment()
     {
@@ -207,7 +174,8 @@ class Leader extends \Volleyball\Bundle\UserBundle\Entity\User
     }
     
     /**
-     * @{inheritdocs}
+     * Get passel
+     * @return \Volleyball\Bundle\PassleBundle\Entity\Passel
      */
     public function getPassel()
     {
@@ -215,7 +183,9 @@ class Leader extends \Volleyball\Bundle\UserBundle\Entity\User
     }
 
     /**
-     * @{inheritdocs}
+     * Set passel
+     * @param \Volleyball\Bundle\PasselBundle\Entity\Passel $passel
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Leader
      */
     public function setPassel(\Volleyball\Bundle\PasselBundle\Entity\Passel $passel)
     {
@@ -225,21 +195,9 @@ class Leader extends \Volleyball\Bundle\UserBundle\Entity\User
     }
 
     /**
-     * @{inheritdocs}
-     */
-    public function isAdmin($admin = null)
-    {
-        if (null != $admin && is_bool($admin)) {
-            $this->admin = $admin;
-
-            return $this;
-        }
-
-        return $this->admin;
-    }
-
-    /**
-     * @{inheritdocs}
+     * Is primary admin
+     * @param boolean|null $primary
+     * @return boolean|\Volleyball\Bundle\PasselBundle\Entity\Leader
      */
     public function isPrimary($primary = null)
     {

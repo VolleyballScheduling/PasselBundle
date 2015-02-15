@@ -1,18 +1,10 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Entity;
 
-use \Doctrine\ORM\Mapping as ORM;
-use \Gedmo\Mapping\Annotation as Gedmo;
-use \Symfony\Component\Validator\Constraints as Assert;
-
 use \Volleyball\Bundle\PasselBundle\Traits\HasAttendeesTrait;
 use \Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
 use \Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
 
-/**
- * @ORM\Entity(repositoryClass="Volleyball\Bundle\PasselBundle\Repository\FactionRepository")
- * @ORM\Table(name="faction")
- */
 class Faction
 {
     use HasAttendeesTrait;
@@ -20,33 +12,32 @@ class Faction
     use TimestampableTrait;
 
     /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * Id
+     * @var integer
      */
     protected $id;
     
     /**
-     * @var  string name
-     * @ORM\Column(name="name", type="string")
+     * Name
+     * @var string
      */
     protected $name;
     
     /**
-     * @var string avatar
-     * @ORM\Column(name="avatar", type="text")
+     * Avatar
+     * @var string
      */
     protected $avatar;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Volleyball\Bundle\PasselBundle\Entity\Passel", inversedBy="faction")
-     * @ORM\JoinColumn(name="passel_id", referencedColumnName="id")
+     * Passel
+     * @var \Volleyball\Bundle\PasselBundle\Entity\Passel
      */
     protected $passel;
 
     /**
      * Get id
-     * @return integer Id
+     * @return integer
      */
     public function getId()
     {
@@ -54,7 +45,8 @@ class Faction
     }
 
     /**
-     * {@inheritdoc}
+     * Get name
+     * @return string
      */
     public function getName()
     {
@@ -62,7 +54,9 @@ class Faction
     }
 
     /**
-     * {@inheritdoc}
+     * Set name
+     * @param string $name
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Faction
      */
     public function setName($name)
     {
@@ -72,7 +66,8 @@ class Faction
     }
 
     /**
-     * {@inheritdoc}
+     * Get avatar
+     * @return string
      */
     public function getAvatar()
     {
@@ -80,7 +75,9 @@ class Faction
     }
 
     /**
-     * {@inheritdoc}
+     * Set avatar
+     * @param string $avatar
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Faction
      */
     public function setAvatar($avatar = '')
     {
@@ -90,7 +87,8 @@ class Faction
     }
 
     /**
-     * {@inheritdoc}
+     * Get passel
+     * @return type
      */
     public function getPassel()
     {
@@ -98,7 +96,9 @@ class Faction
     }
 
     /**
-     * {@inheritdoc}
+     * Set passel
+     * @param \Volleyball\Bundle\PasselBundle\Entity\Passel $passel
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Faction
      */
     public function setPassel(\Volleyball\Bundle\PasselBundle\Entity\Passel $passel)
     {

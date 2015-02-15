@@ -1,19 +1,12 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Entity;
 
-use \Doctrine\ORM\Mapping as ORM;
-use \Gedmo\Mapping\Annotation as Gedmo;
-use \Symfony\Component\Validator\Constraints as Assert;
 use \Doctrine\Common\Collections\ArrayCollection;
 
-use \Volleyball\Bundle\PasselBundle\Traits\HasAttendeesTrait;
-use \Volleyball\Bundle\UtilityBundle\Traits\SluggableTrait;
-use \Volleyball\Bundle\UtilityBundle\Traits\TimestampableTrait;
+use \Volleyball\Bundle\AttendeeBundle\Traits\HasAttendeesTrait;
+use \Volleyball\Bundle\CoreBundle\Traits\SluggableTrait;
+use \Volleyball\Bundle\CoreBundle\Traits\TimestampableTrait;
 
-/**
- * @ORM\Table(name="passel_type")
- * @ORM\Entity(repositoryClass="Volleyball\Bundle\PasselBundle\Repository\TypeRepository")
- */
 class Type
 {
     use HasAttendeesTrait;
@@ -21,16 +14,14 @@ class Type
     use TimestampableTrait;
     
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * Id
+     * @var integer
      */
     protected $id;
     
     /**
      * Name
-     * @var  string name
-     * @ORM\Column(name="name", type="string")
+     * @var string
      */
     protected $name;
     
@@ -41,14 +32,13 @@ class Type
     protected $description;
     
     /**
-     * @ORM\ManyToMany(targetEntity="Volleyball\Bundle\OrganizationBundle\Entity\Organization", inversedBy="types")
-     * @ORM\JoinTable(name="passel_types_organizations")
+     * Organizations
+     * @var \Doctrine\Common\Collections\ArrayCollection
      */
     protected $organizations;
     
     /**
      * Get id
-     *
      * @return integer
      */
     public function getId()
@@ -57,7 +47,8 @@ class Type
     }
 
     /**
-     * @{inheritdocs}
+     * Get name
+     * @return string
      */
     public function getName()
     {
@@ -65,7 +56,9 @@ class Type
     }
 
     /**
-     * @{inheritdocs}
+     * Set name
+     * @param string $name
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Type
      */
     public function setName($name)
     {
@@ -75,7 +68,8 @@ class Type
     }
 
     /**
-     * @{inheritdocs}
+     * Get description
+     * @return string
      */
     public function getDescription()
     {
@@ -83,7 +77,9 @@ class Type
     }
 
     /**
-     * @{inheritdocs}
+     * Set description
+     * @param string $description
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Type
      */
     public function setDescription($description)
     {
@@ -93,7 +89,9 @@ class Type
     }
 
     /**
-     * @{inheritdocs}
+     * Get organization
+     * @param type $organization
+     * @return \Volleyball\Bundle\OrganizationBundle\Entity\Organization
      */
     public function getOrganization($organization)
     {
@@ -101,13 +99,19 @@ class Type
     }
     
     /**
-     * @{inheritdocs}
+     * Get organizations
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getOrganizations()
     {
         return $this->organizations;
     }
     
+    /**
+     * Set organizations
+     * @param array $organizations
+     * @return \Volleyball\Bundle\PasselBundle\Entity\Type
+     */
     public function setOrganizations(array $organizations)
     {
         if (!$organizations instanceof ArrayCollection) {
@@ -115,6 +119,8 @@ class Type
         }
         
         $this->organizations = $organizations;
+        
+        return $this;
     }
 
     /**
