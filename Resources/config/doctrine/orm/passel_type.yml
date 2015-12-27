@@ -1,0 +1,50 @@
+Volleyball\Bundle\PasselBundle\Entity\Type:
+    type: entity
+    table: passel_type
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+        description:
+            type: string
+            nullable: true
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+        slug:
+            type: string
+            gedmo:
+                slug:
+                    fields:
+                        - name
+    ManyToOne:
+        organization:
+            targetEntity: Volleyball\Bundle\OrganizationBundle\Entity\Organization
+            inversedBy: passel_type
+            joinColumn:
+                name: passel_type_id
+                referencedColumnName: id
+        parent:
+            targetEntity: Volleyball\Bundle\PasselBundle\Entity\PasselType
+            inversedBy: passel_type
+            joinColumn:
+                name: passel_type_id
+                referencedColumnName: id
+    OneToMany:
+        attendees:
+            targetEntity: Volleyball\Bundle\AttendeeBundle\Entity\Attendee
+            mappedBy: passel_type
+        children:
+            targetEntity: Volleyball\Bundle\PasselBundle\Entity\PasselType
+            mappedBy: passel_type

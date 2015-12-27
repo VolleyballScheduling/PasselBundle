@@ -2,29 +2,31 @@
 namespace Volleyball\Bundle\PasselBundle;
 
 use \Symfony\Component\DependencyInjection\ContainerBuilder;
-use \Sylius\Bundle\ResourceBundle\AbstractResourceBundle;
-use \Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
 
-class VolleyballPasselBundle extends AbstractResourceBundle
+class VolleyballPasselBundle extends \Knp\RadBundle\AppBundle\Bundle
 {
     /**
-     * {@inheritdoc}
+     * @{inheritdoc}
      */
-    public static function getSupportedDrivers()
+    public function buildConfiguration(NodeParentInterface $rootNode)
     {
-        return array(
-            SyliusResourceBundle::DRIVER_DOCTRINE_ORM
-        );
+//        $rootNode
+//            ->children()
+//                ->scalarNode('foo')
+//                    ->defaultValue('bar')
+//                ->end()
+//            ->end();
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @{inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function buildContainer(array $config, ContainerBuilder $container)
     {
-        parent::build($container);
+        // here $config is the parsed configuration
+//        $container->setParameter('app.foo', $config['foo']);
     }
-    
+
     /**
      * {@inheritdoc}
      */

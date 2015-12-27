@@ -1,23 +1,23 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Form\Type;
 
-class AttendeeSearchFormType extends \Volleyball\Bundle\UtilityBundle\Form\Type\SearchFormType
+class PasselTypeSearchFormType extends \Volleyball\Bundle\UtilityBundle\Form\Type\SearchFormType
 {
     public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
     {
-        $builder->add('first_name');
-        $builder->add('last_name');
+        $builder->add('name');
+        $builder->add('organization');
     }
 
     public function setDefaultOptions(\Symfony\Component\OptionsResolver\OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Volleyball\Bundle\PasselBundle\Entity\Attendee'
+            'data_class' => 'Volleyball\Bundle\PasselBundle\Entity\Type'
         ));
     }
 
     public function getName()
     {
-        return 'attendee_search';
+        return 'passel_type_search';
     }
 }

@@ -12,7 +12,7 @@ use \Pagerfanta\View\TwitterBootstrapView;
 class PositionController extends \Volleyball\Bundle\UtilityBundle\Controller\UtilityController
 {
     /**
-     * @Route("/", name="volleyball_attendee_position_index")
+     * @Route("/", name="volleyball_leader_position_index")
      * @Template("VolleyballPasselBundle:Position:index.html.twig")
      */
     public function indexAction(Request $request)
@@ -32,7 +32,7 @@ class PositionController extends \Volleyball\Bundle\UtilityBundle\Controller\Uti
     }
 
     /**
-     * @Route("/new", name="volleyball_attendee_position_new")
+     * @Route("/new", name="volleyball_leader_position_new")
      * @Template("VolleyballPasselbundle:Position:new.html.twig")
      */
     public function newAction(Request $request)
@@ -66,7 +66,7 @@ class PositionController extends \Volleyball\Bundle\UtilityBundle\Controller\Uti
     }
     
     /**
-     * @Route("/search", name="volleyball_attendee_position_search")
+     * @Route("/search", name="volleyball_leader_position_search")
      * @Template("VolleyballPasselBundle:Position:search.html.twig")
      */
     public function searchAction(Request $request)
@@ -90,7 +90,7 @@ class PositionController extends \Volleyball\Bundle\UtilityBundle\Controller\Uti
     }
     
     /**
-     * @Route("/{slug}", name="volleyball_attendee_position_show")
+     * @Route("/{slug}", name="volleyball_leader_position_show")
      * @Template("VolleyballPasselBundle:Position:show.html.twig")
      */
     public function showAction(Request $request)
@@ -105,7 +105,7 @@ class PositionController extends \Volleyball\Bundle\UtilityBundle\Controller\Uti
                 'error',
                 'no matching position found.'
             );
-            $this->redirect($this->generateUrl('volleyball_attendee_position_index'));
+            $this->redirect($this->generateUrl('volleyball_leader_position_index'));
         }
 
         return array('position' => $position);

@@ -10,11 +10,11 @@ use \Pagerfanta\Adapter\DoctrineORMAdapter;
 use \Pagerfanta\Exception\NotValidCurrentPageException;
 use \Pagerfanta\View\TwitterBootstrapView;
 
-class PasselController extends \Volleyball\Bundle\UtilityBundle\Controller\UtilityController
+class PasselController extends \Volleyball\Bundle\UtilityBundle\Controller\Controller
 {
     /**
-     * @Route("/", name="volleyball_passel_index")
-     * @Template("VolleyballPasselBundle:Passel:index.html.twig")
+     * Index action
+     * @inheritdoc
      */
     public function indexAction(Request $request)
     {
@@ -35,13 +35,11 @@ class PasselController extends \Volleyball\Bundle\UtilityBundle\Controller\Utili
     }
 
     /**
-     * @Route("/new", name="volleyball_passel_new")
-     * @Template("VolleyballPasselbundle:Passel:new.html.twig")
+     * New action
+     * @inheritdoc
      */
     public function newAction(Request $request)
     {
-        $this->breadcrumbs->addItem('passels', $this->get('router')->generate('volleyball_passel_index'));
-        
         $passel = new \Volleyball\Bundle\PasselBundle\Entity\Passel();
         $form = $this->createForm(
             new \Volleyball\Bundle\PasselBundle\Form\Type\PasselFormType(),
@@ -71,14 +69,11 @@ class PasselController extends \Volleyball\Bundle\UtilityBundle\Controller\Utili
     }
     
     /**
-     * @Route("/search", name="volleyball_passel_search")
-     * @Template("VolleyballPasselBundle:Passel:search.html.twig")
+     * Search action
+     * @inheritdoc
      */
     public function searchAction(Request $request)
     {
-        $this->breadcrumbs->addItem('passels', $this->get('router')->generate('volleyball_passel_index'));
-        $this->breadcrumbs->addItem('search', $this->get('router')->generate('volleyball_passel_search'));
-        
         $form = $this->createForm(new \Volleyball\Bundle\PasselBundle\Form\Type\PasselSearchFormType());
         
         if ("POST" == $request->getMethod()) {
@@ -98,8 +93,8 @@ class PasselController extends \Volleyball\Bundle\UtilityBundle\Controller\Utili
     }
     
     /**
-     * @Route("/{slug}", name="volleyball_passel_show")
-     * @Template("VolleyballPasselBundle:Passel:show.html.twig")
+     * Show action
+     * @inheritdoc
      */
     public function showAction(Request $request)
     {

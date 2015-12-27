@@ -1,0 +1,37 @@
+# Faction
+vb_faction_index:
+    path: /
+    host: factions.{domain}
+    defaults:
+        _controller: VolleyballPasselBundle:Faction:index
+        page: 1
+    requirements:
+        page: \d+
+        domain: %domain%
+vb_faction_index_by_passel:
+    path: /{slug}/factions
+    host: passels.{domain}
+    defaults:
+        _controller: VolleyballPasselBundle:Faction:index
+        page: 1
+    requirements:
+        page: \d+
+        slug: +s
+        domain: %domain%
+vb_faction_show:
+    path: /{slug}
+    host: factions.{domain}
+    defaults:
+        _controller: VolleyballPasselBundle:Faction:show
+        page: 1
+    requirements:
+        page: \d+
+        domain: %domain%
+vb_faction_edit:
+    path: /{slug}/edit
+    host: factions.{domain}
+    defaults: { _controller: VolleyballPasselBundle:Faction:edit }
+    requirements:
+        slug: +s
+        domain: %domain%
+

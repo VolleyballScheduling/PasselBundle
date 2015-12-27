@@ -1,9 +1,4 @@
 services:
-    volleyball.controller.attendee:
-        class: Volleyball\Bundle\PasselBundle\Controller\AttendeeController
-        factory_service: sylius.controller.configuration_factory
-        factory_method: createConfiguration
-        arguments: ["sylius", "attendee", "VolleyballPasselBundle:Attendee"]
     volleyball.controller.faction:
         class: Volleyball\Bundle\PasselBundle\Controller\FactionController
         factory_service: sylius.controller.configuration_factory
@@ -14,11 +9,6 @@ services:
         factory_service: sylius.controller.configuration_factory
         factory_method: createConfiguration
         arguments: ["sylius", "leader", "VolleyballPasselBundle:Leader"]
-    volleyball.controller.level:
-        class: Volleyball\Bundle\PasselBundle\Controller\LevelController
-        factory_service: sylius.controller.configuration_factory
-        factory_method: createConfiguration
-        arguments: ["sylius", "level", "VolleyballPasselBundle:Level"]
     volleyball.controller.passel:
         class: Volleyball\Bundle\PasselBundle\Controller\PasselController
         factory_service: sylius.controller.configuration_factory
@@ -30,7 +20,7 @@ services:
         factory_method: createConfiguration
         arguments: ["sylius", "attendee_position", "VolleyballPasselBundle:Position"]
     volleyball.controller.passel_type:
-        class: Volleyball\Bundle\PasselBundle\Controller\TypeController
+        class: Volleyball\Bundle\PasselBundle\Controller\PasselTypeController
         factory_service: sylius.controller.configuration_factory
         factory_method: createConfiguration
-        arguments: ["sylius", "passel_type", "VolleyballPasselBundle:Type"]
+        arguments: ["sylius", "passel_type", "VolleyballPasselBundle:PasselType"]

@@ -1,0 +1,65 @@
+Volleyball\Bundle\PasselBundle\Entity\Passel:
+    type: entity
+    table: passel
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+        slug:
+            type: string
+            gedmo:
+                slug:
+                    fields:
+                        - name
+    ManyToOne:
+        type:
+            targetEntity: Volleyball\Bundle\PasselBundle\Entity\Type
+            inversedBy: passel
+            joinColumn:
+                name: passel_type_id
+                referencedColumnName: id
+        organization:
+            targetEntity: Volleyball\Bundle\OrganizationBundle\Entity\Organization
+            inversedBy: passel
+            joinColumn:
+                name: organization_id
+                referencedColumnName: id
+        council:
+            targetEntity: Volleyball\Bundle\OrganizationBundle\Entity\Council
+            inversedBy: passel
+            joinColumn:
+                name: council_id
+                referencedColumnName: id
+        region:
+            targetEntity: Volleyball\Bundle\OrganizationBundle\Entity\Region
+            inversedBy: passel
+            joinColumn:
+                name: region_id
+                referencedColumnName: id
+    OneToMany:
+        attendees:
+            targetEntity: Volleyball\Bundle\PasselBundle\Entity\Attendee
+            mappedBy: passel
+        factions:
+            targetEntity: Volleyball\Bundle\PasselBundle\Entity\Faction
+            mappedBy: passel
+        leaders:
+            targetEntity: Volleyball\Bundle\PasselBundle\Entity\Leader
+            mappedBy: passel
+        enrollments:
+            targetEntity: Volleyball\Bundle\EnrollmentBundle\Entity\PasselEnrollment
+            mappedBy: passel

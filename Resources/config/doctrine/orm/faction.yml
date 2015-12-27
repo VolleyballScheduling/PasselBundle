@@ -1,0 +1,45 @@
+Volleyball\Bundle\PasselBundle\Entity\Faction:
+    type: entity
+    table: faction
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+        description:
+            type: string
+            nullable: true
+        avatar:
+            type: string
+            nullable: true
+            default: /volleyballpassel/images/faction/avatar/default.png
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+        slug:
+            type: string
+            gedmo:
+                slug:
+                    fields:
+                        - name
+    ManyToOne:
+        passel:
+            targetEntity: Volleyball\Bundle\PasselBundle\Entity\Passel
+            inversedBy: faction
+            joinColumn:
+                name: passel_id
+                referencedColumnName: id
+    OneToMany:
+        attendees:
+            targetEntity: Volleyball\Bundle\PasselBundle\Entity\Attendee
+            mappedBy: faction

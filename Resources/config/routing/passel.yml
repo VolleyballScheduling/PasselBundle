@@ -1,0 +1,37 @@
+# Passel
+vb_passel_index:
+    path: /
+    host: passels.{domain}
+    defaults:
+        _controller: VolleyballPasselBundle:Passel:index
+        page: 1
+    requirements:
+        page: \d+
+        domain: %domain%
+vb_passel_index_by_organization:
+    path: /{slug}/passels
+    host: organizations.{domain}
+    defaults:
+        _controller: VolleyballPasselBundle:Passel:index
+        page: 1
+    requirements:
+        page: \d+
+        slug: +s
+        domain: %domain%
+vb_passel_show:
+    path: /{slug}
+    host: passels.{domain}
+    defaults:
+        _controller: VolleyballPasselBundle:Passel:show
+        page: 1
+    requirements:
+        page: \d+
+        domain: %domain%
+vb_passel_edit:
+    path: /{slug}/edit
+    host: passels.{domain}
+    defaults: { _controller: VolleyballPasselBundle:Passel:edit }
+    requirements:
+        slug: +s
+        domain: %domain%
+

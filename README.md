@@ -81,8 +81,3 @@ volleyball_attendee_position_new | /attendees/positions/new
 volleyball_attendee_index | /attendees
 volleyball_attendee_show | /attendees/{slug}
 volleyball_attendee_new | /attendees/new
-
-###Services
-
-###Traits
-- HasAttendeesTrait

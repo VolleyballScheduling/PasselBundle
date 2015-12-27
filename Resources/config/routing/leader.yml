@@ -1,0 +1,37 @@
+# Leader
+vb_leader_index:
+    path: /
+    host: leaders.{domain}
+    defaults:
+        _controller: VolleyballPasselBundle:Leader:index
+        page: 1
+    requirements:
+        page: \d+
+        domain: %domain%
+vb_leader_index_by_passel:
+    path: /{slug}/leaders
+    host: passels.{domain}
+    defaults:
+        _controller: VolleyballPasselBundle:Leader:index
+        page: 1
+    requirements:
+        page: \d+
+        slug: +s
+        domain: %domain%
+vb_leader_show:
+    path: /{slug}
+    host: leaders.{domain}
+    defaults:
+        _controller: VolleyballPasselBundle:Leader:show
+        page: 1
+    requirements:
+        page: \d+
+        domain: %domain%
+vb_leader_edit:
+    path: /{slug}/edit
+    host: leaders.{domain}
+    defaults: { _controller: VolleyballPasselBundle:Leader:edit }
+    requirements:
+        slug: +s
+        domain: %domain%
+

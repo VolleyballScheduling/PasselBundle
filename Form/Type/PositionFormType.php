@@ -1,7 +1,7 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Form\Type;
 
-class LevelFormType extends \Symfony\Component\Form\AbstractType
+class PositionFormType extends \Symfony\Component\Form\AbstractType
 {
     public function buildForm(
         \Symfony\Component\Form\FormBuilderInterface $builder,
@@ -9,12 +9,11 @@ class LevelFormType extends \Symfony\Component\Form\AbstractType
     ) {
         $builder->add('name');
         $builder->add('description');
-        $builder->add('special');
-        $builder->add('organizations');
+        $builder->add('parent');
     }
 
     public function getName()
     {
-        return 'level';
+        return 'leader_position';
     }
 }

@@ -1,0 +1,41 @@
+\Volleyball\Bundle\PasselBundle\Entity\Position:
+    type: entity
+    table: leader_position
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+        description:
+            type: string
+            nullable: true
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+        slug:
+            type: string
+            gedmo:
+                slug:
+                    fields:
+                        - name
+    ManyToOne:
+        organization:
+            targetEntity: Volleyball\Bundle\OrganizationBundle\Entity\Organization
+            joinColumn:
+                name: organization_id
+                referencedColumnName: id
+            inversedBy: attendee_position
+    OneToMany:
+        attendees:
+            targetEntity: Volleyball\Bundle\PasselBundle\Entity\Leader
+            mappedBy: leader_position

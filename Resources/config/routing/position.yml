@@ -1,0 +1,37 @@
+# Position
+vb_position_index:
+    path: /
+    host: positions.{domain}
+    defaults:
+        _controller: VolleyballPasselBundle:Position:index
+        page: 1
+    requirements:
+        page: \d+
+        domain: %domain%
+vb_position_index_by_passel:
+    path: /{slug}/positions
+    host: passels.{domain}
+    defaults:
+        _controller: VolleyballPasselBundle:Position:index
+        page: 1
+    requirements:
+        page: \d+
+        slug: +s
+        domain: %domain%
+vb_position_show:
+    path: /{slug}
+    host: positions.{domain}
+    defaults:
+        _controller: VolleyballPasselBundle:Position:show
+        page: 1
+    requirements:
+        page: \d+
+        domain: %domain%
+vb_position_edit:
+    path: /{slug}/edit
+    host: positions.{domain}
+    defaults: { _controller: VolleyballPasselBundle:Position:edit }
+    requirements:
+        slug: +s
+        domain: %domain%
+

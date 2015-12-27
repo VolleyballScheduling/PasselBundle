@@ -1,0 +1,48 @@
+# Passel Bundle
+'Volleyball:Passels':
+    host: passels.{domain}
+    defaults:
+        _resources:
+            "passels": {service: "volleyball.repository.passel", method: "findAll"}
+            "passel": {service: "volleyball.repository.passel", method: "find", arguments: [name: "id"]}
+            "session": {service: "service_container", method: "get", arguments: [value: "session"]}
+    requirements:
+        domain: %domain%
+'Volleyball:PasselTypes':
+    host: passels.{domain}
+    path: /types/
+    defaults:
+        _resources:
+            "passel_types": {service: "volleyball.repository.passel_type", method: "findAll"}
+            "passel_type": {service: "volleyball.repository.passel_type", method: "find", arguments: [name: "id"]}
+            "session": {service: "service_container", method: "get", arguments: [value: "session"]}
+    requirements:
+        domain: %domain%
+'Volleyball:Leaders':
+    host: leaders.{domain}
+    defaults:
+        _resources:
+            "leaders": {service: "volleyball.repository.leader", method: "findAll"}
+            "leader": {service: "volleyball.repository.leader", method: "find", arguments: [name: "id"]}
+            "session": {service: "service_container", method: "get", arguments: [value: "session"]}
+    requirements:
+        domain: %domain%
+'Volleyball:LeaderPositions':
+    host: leaders.{domain}
+    path: /positions/
+    defaults:
+        _resources:
+            "leader_positions": {service: "volleyball.repository.leader_position", method: "findAll"}
+            "leader_position": {service: "volleyball.repository.leader_position", method: "find", arguments: [name: "id"]}
+            "session": {service: "service_container", method: "get", arguments: [value: "session"]}
+    requirements:
+        domain: %domain%
+
+#passel:
+#    resource: "@VolleyballPasselBundle/Resources/config/routing/passel.yml"
+#passel_type:
+#    resource: "@VolleyballPasselBundle/Resources/config/routing/passel_type.yml"
+#leader:
+#    resource: "@VolleyballPasselBundle/Resources/config/routing/leader.yml"
+#position:
+#    resource: "@VolleyballPasselBundle/Resources/config/routing/position.yml"

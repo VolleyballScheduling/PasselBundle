@@ -1,0 +1,19 @@
+Volleyball\Bundle\PasselBundle\Entity\Leader:
+    type: entity
+    table: leader
+    fields:
+        admin:
+            type: boolean
+            nullable: true
+            default: false
+        primary:
+            type: boolean
+            nullable: true
+            default: false
+    manyToOne:
+        passel:
+            targetEntity: Volleyball\Bundle\PasselBundle\Entity\Passel
+            inversedBy: leader
+            joinColumn:
+                name: passel_id
+                referencedColumnName: id

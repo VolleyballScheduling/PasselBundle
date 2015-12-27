@@ -8,7 +8,7 @@
         "passel",
         "faction",
         "leader",
-        "attendee"
+        "position"
     ],
     "homepage": "http://volleyball.daviddurost.net",
     "license": "MIT",
