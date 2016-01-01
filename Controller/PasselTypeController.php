@@ -1,119 +1,63 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Controller;
 
-use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use \Symfony\Component\HttpFoundation\Request;
-
-use \Pagerfanta\Pagerfanta;
-use \Pagerfanta\Adapter\DoctrineORMAdapter;
-use \Pagerfanta\Exception\NotValidCurrentPageException;
-use \Pagerfanta\View\TwitterBootstrapView;
-
-class PasselTypeController extends \Volleyball\Bundle\UtilityBundle\Controller\UtilityController
+class PasselTypeController extends \Volleyball\Bundle\UtilityBundle\Controller\Controller
 {
     /**
-     * @Route("/", name="volleyball_passel_type_index")
-     * @Template("VolleyballPasselBundle:PasselType:index.html.twig")
+     * Index action
+     * @inheritdoc
      */
-    public function indexAction(Request $request)
+    public function indexAction(array $passel_types)
     {
-        $query = $this->get('doctrine')
-            ->getRepository('VolleyballPasselBundle:PasselType');
-
-        if (!$this->getRequest()->get('slug', false)) {
-            $query->findAll();
-        } else {
-            $query->andWhere()
-        }
-
-        $pager = new Pagerfanta(new DoctrineORMAdapter($query));
-        $pager->setMaxPerPage($this->getRequest()->get('pageMax', 5));
-        $pager->setCurrentPage($this->getRequest()->get('page', 1));
-
-        return array(
-          'passel_types' => $pager->getCurrentPageResults(),
-          'pager'  => $pager
-        );
+        return ['passel_types' => $this->getPasselTypes()];
     }
 
     /**
-     * @Route("/new", name="volleyball_passel_type_new")
-     * @Template("VolleyballPasselBundle:PasselType:new.html.twig")
+     * New action
+     * @inheritdoc
      */
-    public function newAction(Request $request)
+    public function newAction()
     {
         $passel_type = new \Volleyball\Bundle\PasselBundle\Entity\PasselType();
-        $form = $this->createForm(
-            new \Volleyball\Bundle\PasselBundle\Form\Type\PasselTypeFormType(),
-            $passel_type
-        );
+        $form = $this->createBoundObjectForm($passel_type, 'new');
 
-        if ("POST" == $request->getMethod()) {
-            $form->handleRequest($this->getRequest());
-            if ($form->isValid()) {
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($passel_type);
-                $em->flush();
+        if ($form->isBound() && $form->isValid()) {
+            $this->persist($passel_type, true);
+            $this->addFlash('passel type created');
 
-                $this->get('session')->getFlashBag()->add(
-                    'success',
-                    'passel type created.'
-                );
-
-                return $this->render(
-                    'VolleyballPasselBundle:PasselType:show.html.twig',
-                    array('passel_type' => $passel_type)
-                );
-            }
+            return $this->redirectToRoute('volleyball_passel_types_index');
         }
 
-        return array('form' => $form->createView());
+        return ['form' => $form->createView()];
     }
     
     /**
-     * @Route("/search", name="volleyball_passel_type_search")
-     * @Template("VolleyballPasselBundle:PasselType:search.html.twig")
+     * Search action
+     * @inheritdoc
      */
-    public function searchAction(Request $request)
+    public function searchAction(array $passel_types)
     {
-        $form = $this->createForm(new \Volleyball\Bundle\PasselBundle\Form\Type\Search\PasselTypeSearchFormType());
+        $passel_type = new \Volleyball\Bundle\PasselBundle\Entity\PasselType();
+        $form = $this->createBoundObjectForm($passel_type, 'search');
         
-        if ("POST" == $request->getMethod()) {
-            $form->handleRequest($this->getRequest());
-            if ($form->isValid()) {
-                /** @TODO finish passel_type search, also restrict access */
-                $passel_types = array();
+        if ($form->isBound() && $form->isValid()) {
+            /** @TODO finish passel type search, also restrict access */
+            $passel_types = array();
 
-                return $this->render(
-                    'VolleyballPasselBundle:PasselType:index.html.twig',
-                    array('passel_types' => $passel_types )
-                );
-            }
+            return ['passel_types' => $passel_types];
         }
 
-        return array('form' => $form->createView());
+        return ['form' => $form->createView()];
     }
     
     /**
-     * @Route("/{slug}", name="volleyball_passel_type_show")
-     * @Template("VolleyballPasselBundle:PasselType:show.html.twig")
+     * Show action
+     * @inheritdoc
      */
-    public function showAction(Request $request)
+    public function showAction(\Volleyball\Bundle\PasselBundle\Entity\PasselType $passel_type)
     {
-        $slug = $request->getParameter('slug');
-        $passel_type = $this->getDoctrine()
-            ->getRepository('VolleyballPasselBundle:PasselType')
-            ->findOneBySlug($slug);
-
-        if (!$passel_type) {
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                'no matching passel type found.'
-            );
-            $this->redirect($this->generateUrl('volleyball_passel_type_index'));
-        }
-
-        return array('passel_type' => $passel_type);
+        return ['passel_type' => $passel_type];
     }
+
+
 }

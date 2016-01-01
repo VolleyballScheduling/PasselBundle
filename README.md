@@ -9,75 +9,58 @@ This is a bundle utilizing the passel component of the Volleyball Scheduling sys
 - [Passel Type](Resources/doc/type.md)
 - [Faction](Resources/doc/faction.md)
 - [Leader](Resources/doc/leader.md)
-- [Attendee Level](Resources/doc/level.md)
-- [Attendee Position](Resources/doc/position.md)
-- [Attendee](Resources/doc/attendee.md)
+- [Leader Position](Resources/doc/position.md)
 
 ##Overview
 ###Controllers
 - PasselController
-- TypeController
+- PasselTypeController
 - FactionController
 - LeaderController
-- LevelController
 - PositionController
-- AttendeeController
+
 
 ###Entities
 - Passel
-- Type
+- Passel Type
 - Faction
 - Leader
-- Level
 - Position
-- Attendee
 
 ###Form Types
 - PasselFormType
 - PasselSearchFormType
-- TypeFormType
-- TypeSearchFormType
+- PasselTypeFormType
+- PasselTypeSearchFormType
 - FactionFormType
 - FactionSearchFormType
 - LeaderFormType
 - LeaderSearchFormType
-- LevelFormType
-- LevelSearchFormType
 - PositionFormType
 - PositionSearchFormType
-- AttendeeFormType
-- AttendeeSearchFormType
 
 ###Repositories
 - PasselRepository
-- TypeRepository
+- PasselTypeRepository
 - FactionRepository
 - LeaderRepository
-- LevelRepository
 - PositionRepository
-- AttendeeRepository
 
 ###Routes
 Route Name | Route Path
 ---|---
-volleyball_passel_index | /passels
-volleyball_passel_show | /passels/{slug}
-volleyball_passel_new | /passels/new
-volleyball_passel_type_index | /passels/types
-volleyball_passel_type_show | /passels/types/{slug}
-volleyball_passel_type_new | /passels/types/new
-volleyball_faction_index | /factions
-volleyball_faction_show | /factions/{slug}
-volleyball_faction_new | /factions/new
-volleyball_leader_index | /leaders
-volleyball_leader_show | /leaders/{slug}
-volleyball_leader_new | /leaders/new
-volleyball_attendee_level_index | /attendees/levels
-volleyball_attendee_level_show | /attendees/levels/{slug}
-volleyball_attendee_level_new | /attendees/levels/new
-volleyball_attendee_position_index | /attendees/positions
-volleyball_attendee_position_show | /attendees/positions/{slug}
-volleyball_attendee_position_new | /attendees/positions/new
-volleyball_attendee_index | /attendees
-volleyball_attendee_show | /attendees/{slug}
-volleyball_attendee_new | /attendees/new
+volleyball_passel_index | passels.%domain%
+volleyball_passel_show | passels.%domain%/{slug}
+volleyball_passel_new | passels.%domain%/new
+volleyball_passel_type_index | passels.%domain%/types
+volleyball_passel_type_show | passels.%domain%/types/{slug}
+volleyball_passel_type_new | passels.%domain%/types/new
+volleyball_faction_index | factions.%domain%
+volleyball_faction_show | factions.%domain%/{slug}
+volleyball_faction_new | factions.%domain%/new
+volleyball_leader_index | leaders.%domain%
+volleyball_leader_show | leaders.%domain%/{slug}
+volleyball_leader_new | leaders.%domain%/new
+volleyball_leader_position_index | leaders.%domain/positions
+volleyball_leader_position_show | leaders.%domain/positions/{slug}
+volleyball_leader_position_new | leaders.%domain/positions/new

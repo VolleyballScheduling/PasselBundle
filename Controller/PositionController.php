@@ -1,113 +1,63 @@
 <?php
 namespace Volleyball\Bundle\PasselBundle\Controller;
 
-use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use \Symfony\Component\HttpFoundation\Request;
-use \Pagerfanta\Pagerfanta;
-use \Pagerfanta\Adapter\DoctrineORMAdapter;
-use \Pagerfanta\Exception\NotValidCurrentPageException;
-use \Pagerfanta\View\TwitterBootstrapView;
-
-class PositionController extends \Volleyball\Bundle\UtilityBundle\Controller\UtilityController
+class PositionController extends \Volleyball\Bundle\UtilityBundle\Controller\Controller
 {
     /**
-     * @Route("/", name="volleyball_leader_position_index")
-     * @Template("VolleyballPasselBundle:Position:index.html.twig")
+     * Index action
+     * @inheritdoc
      */
-    public function indexAction(Request $request)
+    public function indexAction(array $positions)
     {
-        $query = $this->get('doctrine')
-            ->getRepository('VolleyballPasselBundle:Position')
-            ->findAll();
-
-        $pager = new Pagerfanta(new DoctrineORMAdapter($query));
-        $pager->setMaxPerPage($this->getRequest()->get('pageMax', 5));
-        $pager->setCurrentPage($this->getRequest()->get('page', 1));
-
-        return array(
-          'positions' => $pager->getCurrentPageResults(),
-          'pager'  => $pager
-        );
+        return ['positions' => $this->getPositions()];
     }
 
     /**
-     * @Route("/new", name="volleyball_leader_position_new")
-     * @Template("VolleyballPasselbundle:Position:new.html.twig")
+     * New action
+     * @inheritdoc
      */
-    public function newAction(Request $request)
+    public function newAction()
     {
         $position = new \Volleyball\Bundle\PasselBundle\Entity\Position();
-        $form = $this->createForm(
-            new \Volleyball\Bundle\PasselBundle\Form\Type\PositionFormType(),
-            $position
-        );
+        $form = $this->createBoundObjectForm($position, 'new');
 
-        if ("POST" == $request->getMethod()) {
-            $form->handleRequest($this->getRequest());
-            if ($form->isValid()) {
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($position);
-                $em->flush();
+        if ($form->isBound() && $form->isValid()) {
+            $this->persist($position, true);
+            $this->addFlash('position created');
 
-                $this->get('session')->getFlashBag()->add(
-                    'success',
-                    'attendee position created.'
-                );
-
-                return $this->render(
-                    'VolleyballPasselbundle:Position:show.html.twig',
-                    array('position' => $position)
-                );
-            }
+            return $this->redirectToRoute('volleyball_positions_index');
         }
 
-        return array('form' => $form->createView());
+        return ['form' => $form->createView()];
     }
     
     /**
-     * @Route("/search", name="volleyball_leader_position_search")
-     * @Template("VolleyballPasselBundle:Position:search.html.twig")
+     * Search action
+     * @inheritdoc
      */
-    public function searchAction(Request $request)
+    public function searchAction(array $positions)
     {
-        $form = $this->createForm(new \Volleyball\Bundle\PasselBundle\Form\Type\PositionSearchFormType());
+        $position = new \Volleyball\Bundle\PasselBundle\Entity\Position();
+        $form = $this->createBoundObjectForm($position, 'search');
         
-        if ("POST" == $request->getMethod()) {
-            $form->handleRequest($this->getRequest());
-            if ($form->isValid()) {
-                /** @TODO finish position search, also restrict access */
-                $positions = array();
+        if ($form->isBound() && $form->isValid()) {
+            /** @TODO finish position search, also restrict access */
+            $positions = array();
 
-                return $this->render(
-                    'VolleyballPasselbundle:Position:index.html.twig',
-                    array('positions' => $positions )
-                );
-            }
+            return ['positions' => $positions];
         }
 
-        return array('form' => $form->createView());
+        return ['form' => $form->createView()];
     }
     
     /**
-     * @Route("/{slug}", name="volleyball_leader_position_show")
-     * @Template("VolleyballPasselBundle:Position:show.html.twig")
+     * Show action
+     * @inheritdoc
      */
-    public function showAction(Request $request)
+    public function showAction(\Volleyball\Bundle\PasselBundle\Entity\Position $position)
     {
-        $slug = $request->getParameter('slug');
-        $position = $this->getDoctrine()
-            ->getRepository('VolleyballPasselbundle:Position')
-            ->findOneBySlug($slug);
-
-        if (!$position) {
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                'no matching position found.'
-            );
-            $this->redirect($this->generateUrl('volleyball_leader_position_index'));
-        }
-
-        return array('position' => $position);
+        return ['position' => $position];
     }
+
+
 }

@@ -1,14 +1,15 @@
 {
     "name": "volleyball/passel-bundle",
     "type": "library",
-    "description": "passel bundle utilizing the passel component of the volleyball system.",
+    "description": "passel bundle for the volleyball system.",
     "keywords": [
         "scheduling",
         "scheduling system",
         "passel",
         "faction",
         "leader",
-        "position"
+        "position",
+        "passel type"
     ],
     "homepage": "http://volleyball.daviddurost.net",
     "license": "MIT",
