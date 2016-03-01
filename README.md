@@ -1,9 +1,10 @@
-#Volleyball
-##Summer Camp Scheduling System
-###Passel Bundle
+Installation
+============
 
-This is a bundle utilizing the passel component of the Volleyball Scheduling system.
+Step 1: Download the Bundle
+---------------------------
 
+<<<<<<< HEAD
 ##Documentation
 - [Passel](Resources/doc/passel.md)
 - [Passel Type](Resources/doc/type.md)
@@ -64,3 +65,43 @@ volleyball_leader_new | leaders.%domain%/new
 volleyball_leader_position_index | leaders.%domain/positions
 volleyball_leader_position_show | leaders.%domain/positions/{slug}
 volleyball_leader_position_new | leaders.%domain/positions/new
+=======
+Open a command console, enter your project directory and execute the
+following command to download the latest stable version of this bundle:
+
+```bash
+$ composer require VolleyballScheduling/PasselBundle "~1"
+```
+
+This command requires you to have Composer installed globally, as explained
+in the [installation chapter](https://getcomposer.org/doc/00-intro.md)
+of the Composer documentation.
+
+Step 2: Enable the Bundle
+-------------------------
+
+Then, enable the bundle by adding the following line in the `app/AppKernel.php`
+file of your project:
+
+```php
+<?php
+// app/AppKernel.php
+
+// ...
+class AppKernel extends Kernel
+{
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+
+            new \Volleyball\Bundle\PasselBundle\VolleyballPasselBundle(),
+        );
+
+        // ...
+    }
+
+    // ...
+}
+```
+>>>>>>> ff2f37d31572826bdc2e2ac573211f03ff1fc602

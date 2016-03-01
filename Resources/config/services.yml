@@ -1,0 +1,15 @@
+<<<<<<< HEAD
+=======
+parameters:
+    volleyball.flow.scenario.attendee_register: Volleyball\Bundle\PasselBundle\Process\Scenario\AttendeeRegistrationScenario
+    volleyball.flow.scenario.leader_register: Volleyball\Bundle\PasselBundle\Process\Scenario\LeaderRegistrationScenario
+services:
+    volleyball.scenario.attendee_register.flow:
+        class: %volleyball.flow.scenario.attendee_register%
+        tags: [{ name: sylius.process.scenario, alias: volleyball.attendee_register.flow }]
+        calls: [[setContainer, [@service_container]]]
+    volleyball.scenario.leader_register.flow:
+        class: %volleyball.flow.scenario.leader_register%
+        tags: [{ name: sylius.process_scenario, alias: volleyball.leader_register.flow }]
+        calls: [[setContainer, [@service_container]]]
+>>>>>>> ff2f37d31572826bdc2e2ac573211f03ff1fc602

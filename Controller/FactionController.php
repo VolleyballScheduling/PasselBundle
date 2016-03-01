@@ -58,6 +58,4 @@ class FactionController extends \Volleyball\Bundle\UtilityBundle\Controller\Cont
     {
         return ['faction' => $faction];
     }
-
-
 }

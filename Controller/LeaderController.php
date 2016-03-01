@@ -58,6 +58,4 @@ class LeaderController extends \Volleyball\Bundle\UtilityBundle\Controller\Contr
     {
         return ['leader' => $leader];
     }
-
-
 }

@@ -7,4 +7,13 @@ class Leader extends \Volleyball\Bundle\UserBundle\Entity\User
     {
         parent::__construct();
     }
+    
+    /**
+     * To string
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->firstName.' '.$this->lastName;
+    }
 }

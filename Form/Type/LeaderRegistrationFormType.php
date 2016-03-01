@@ -21,4 +21,15 @@ class LeaderRegistrationFormType extends \FOS\UserBundle\Form\Type\RegistrationF
     {
         return 'leader_registration';
     }
+    
+    /**
+     * Set default options
+     * @param \Symfony\Component\OptionsResolver\OptionsResolverInterface $resolver
+     */
+    public function setDefaultOptions(\Symfony\Component\OptionsResolver\OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(
+            array('data_class' => 'Volleyball\Bundle\PasselBundle\Entity\Leader')
+        );
+    }
 }
