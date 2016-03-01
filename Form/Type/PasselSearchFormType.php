@@ -6,7 +6,7 @@ class PasselSearchFormType extends \Volleyball\Bundle\UtilityBundle\Form\Type\Se
     public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
     {
         $builder->add('name');
-        $builder->add('type');
+        $builder->add('passel_type');
     }
 
     public function getName()
